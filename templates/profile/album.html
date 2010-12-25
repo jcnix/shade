@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}{{ album.name }}{% endblock %}
+
+{% block content %}
+<p><b>{{ album.name }}</b></p>
+{% if album in user.get_profile.albums.all %}
+    <p><a href="{% url shade.social.views.upload_img album.id %}">Upload Image</a></p>
+{% endif %}
+
+<p>
+{% for p in album.pictures.all %}
+    <a href="{% url shade.social.views.view_img other_user.get_profile.url p.id %}"><img src="{{ p.image.url }}" height="150" width="200"></a>
+{% empty %}
+    Album empty.
+{% endfor %}
+</p>
+{% endblock %}
+

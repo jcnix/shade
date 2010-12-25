@@ -1,0 +1,10 @@
+{% for field in form.visible_fields %}
+    <div {% if field.errors %}class="field_error"{% endif %}>
+        {{ field.label_tag }}<br/>
+        {{ field }}
+        {% for err in field.errors %}
+            <span class="error_message"><font color="red">{{ err }}</font></span>
+        {% endfor %}
+    </div>
+{% endfor %}
+

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.first_name }}'s Albums{% endblock %}
+
+{% block content %}
+<p><b>New Album</b></p>
+<form method="post" action="">
+    {% csrf_token %}
+    {% include "base_form.html" %}
+    <input type="submit" value="Submit" />
+</form>
+{% endblock %}
+

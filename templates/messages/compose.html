@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Inbox - Compose{% endblock %}
+
+{% block content %}
+<p>
+<div id="nav">
+    <ul>
+        <li><a href="{% url shade.social.views.inbox %}">Inbox</a></li>
+    </ul>
+</div>
+<br/>
+<b>Compose Message</b><br/>
+<form method="post" action="">
+    {% csrf_token %}
+    {% include "base_form.html" %}
+    <input type="submit" value="Send" />
+</form>
+{% endblock %}
+

@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+{% block html_declare %}
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+{% endblock %}
+    <head>
+        <title>{% block title %}{% endblock %} | Shade</title>
+        <link type="text/css" rel="stylesheet" href="/shade/css/shade.css" />
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+        {% block extra_head %}
+        {% endblock %}
+        </head>
+    <body>
+        {% block extra_body %}
+        {% endblock %}
+        <div id="wrap">
+            <div id="header_wrapper">
+                <div id="header">
+                    <a href="/"><h1>Shade</h1></a>
+                    <h3>Share your stuff</h3>
+                </div>
+            </div>
+            <div id="nav">
+                {% if user.is_authenticated %}
+                    <ul>
+                        <li><a href="{% url shade.social.views.dashboard %}">Dashboard</a></li>
+                        <li><a href="{% url shade.social.views.settings %}">Settings</a></li>
+                        <li><a href="{% url shade.social.views.profile user.get_profile.url %}">Profile</a></li>
+                        <li><a href="{% url shade.social.views.albums user.get_profile.url %}">Pictures</a></li>
+                        <li><a href="{% url shade.social.views.search %}">Search</a></li>
+                        <li><a href="/accounts/logout/">Logout</a></li>
+                    </ul>    
+                {% endif %}
+            </div>
+            <div id="main">
+                <div id="content">
+                    {% block content %}
+                    {% endblock %}
+                    {% block main_content %}
+                    {% endblock %}
+                    <hr/>
+                </div>
+                <div id="side">
+                    {% if user %}
+                        <p>
+                        <b>Invites</b><br/>
+                        {% for inv in user.get_profile.invites.all %}
+                        Invite from {{ inv.sender.get_profile }} on {{ inv.sent }}<br/>
+                            <a href="{% url shade.social.views.accept_inv inv.sender.get_profile.url %}">Accept</a> /
+                            <a href="{% url shade.social.views.ignore_inv inv.sender.get_profile.url %}">Ignore</a>
+                        {% empty %}
+                            No invites.
+                        {% endfor %}
+                        </p>
+                        <p>
+                        <b><a href="{% url shade.social.views.inbox %}">Messages</a></b><br/>
+                        {% if user.get_profile.messages.all %}
+                            {% with user.get_profile.messages.count as total %}
+                                {{ total }} message{{ total|pluralize }}
+                            {% endwith %}
+                        {% else %}
+                            No new messages.
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            <div id="push">&nbsp</div>
+            <div id="footer">
+                <p>Copyright 2010 Casey-Jones.org <a href="http://www.djangoproject.com/"><img src="http://media.djangoproject.com/img/badges/djangoproject120x25.gif" border="0" alt="A Django project." title="A Django project." /></a></p>
+            </div>
+        </div>
+    </body>
+</html>
+

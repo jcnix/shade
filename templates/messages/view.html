@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}{{ msg.subject }}{% endblock %}
+
+{% block content %}
+<p>
+<div id="nav">
+    <ul>
+        <li><a href="{% url shade.social.views.inbox %}">Inbox</a></li>
+        <li><a href="{% url shade.social.views.msg_compose msg.id %}">Reply</a></li>
+    </ul>
+</div>
+<br/>
+<p><b>{{ msg.subject }}</b><br/>
+From: {{ msg.author.get_full_name }}<br/>
+Sent: {{ msg.sent }}</p>
+<blockquote>{{ msg.body }}</blockquote>
+{% endblock %}
+

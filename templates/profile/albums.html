@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}{{ other_user.first_name }}'s Albums{% endblock %}
+
+{% block content %}
+<p><b>Albums</b></p>
+{% if other_user == user %}
+    <p><a href="{% url shade.social.views.create_album user.get_profile.url %}">Create Album</a></p>
+{% endif %}
+{% for a in other_user.get_profile.albums.all %}
+    <p><a href="{% url shade.social.views.album other_user.get_profile.url a.id %}">{{ a.name }}</a></p>
+{% empty %}
+    <p>No albums</p>
+{% endfor %}
+{% endblock %}
+

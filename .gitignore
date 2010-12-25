@@ -1,0 +1,7 @@
+*.pyc
+static/media/uploads/*
+deploy.sh
+rsyncignore
+settings.py
+localsettings.py
+

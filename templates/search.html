@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+<p><b>Search</b></p>
+<p>Enter either name or email</p>
+<form method="post" action="">
+    {% csrf_token %}
+    {% include "base_form.html" %}
+    <input type="submit" value="Submit" />
+</form>
+{% if results %}
+    <br/>
+    <p><b>Results</b></p>
+    {% for r in results %}
+    <p><a href="{% url shade.social.views.profile r.get_profile.url %}">{{ r.get_full_name }}</a></p>
+    {% endfor %}
+{% endif %}
+{% endblock %}
+

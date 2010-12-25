@@ -1,0 +1,10 @@
+I'm using Django-SocialAuth for authentication.
+http://github.com/uswaretech/Django-Socialauth
+
+These files I got from the SocialAuth project:
+static/media/css/openid.css
+static/media/css/socialauth.css
+static/media/js/jquery-1.2.6.min.js
+static/media/js/openid-jquery.js
+everything in static/media/images
+

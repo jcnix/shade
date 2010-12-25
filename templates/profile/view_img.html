@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Image{% endblock %}
+
+{% block content %}
+{% if user == other_user %}
+    <p><a href="{% url shade.social.views.set_profile_pic img.id %}">Set as profile picture</a></p>
+{% endif %}
+<p><img src="{{ img.image.url }}"><p>
+<p>{{ img.caption }}</p>
+{% endblock %}
+

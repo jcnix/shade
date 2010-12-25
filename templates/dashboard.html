@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}My Dashboard{% endblock %}
+
+{% block content %}
+<p>Welcome {{ user.first_name }}</p>
+<p>url: {{ user.get_profile.url }}</p>
+<h3>Friends</h3>
+<p>
+{% for f in user.get_profile.friends.all %}
+    <a href="{% url shade.social.views.profile f.get_profile.url %}">{{ f.get_profile }}</a>
+    <br/>
+{% endfor %}
+<h3>Updates</h3>
+{% for u in updates %}
+    <p>
+    {{ u.post }}<br/>
+    {{ u.author.get_full_name }} on {{ u.sent }}
+    </p>
+{% endfor %}
+</p>
+{% endblock %}
+

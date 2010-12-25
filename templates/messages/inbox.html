@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Inbox{% endblock %}
+
+{% block content %}
+<p>
+<div id="nav">
+    <ul>
+        <li><a href="{% url shade.social.views.msg_compose %}">Compose</a></li>
+    </ul>
+</div>
+<br/>
+<b>Inbox</b><br/>
+<table>
+    <tr class="row2">
+        <td>Author</td>
+        <td>Subject</td>
+        <td>Sent</td>
+{% for m in user.get_profile.messages.all %}
+    {% if m.read %}
+        <tr class="{% cycle "row1" "row2" %}">
+    {% else %}
+        <tr class="{% cycle "red_row1" "red_row2" %}">
+    {% endif %}
+        <td><a href="{% url shade.social.views.profile m.author.get_profile.url %}">{{ m.author.get_full_name }}</a></td>
+        <td><a href="{% url shade.social.views.msg_view m.id %}">{{ m.subject }}</a></td>
+        <td>{{ m.sent }}</td>
+    </tr>
+{% empty %}
+    No Messages
+{% endfor %}
+</table>
+{% endblock %}
+

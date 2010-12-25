@@ -1,0 +1,8 @@
+<b>Login</b>
+<form method="post" action="/login/">
+    {% csrf_token %}
+    {% include "base_form.html" %}
+    <p><input type="submit" value="Login" /></p>
+</form>
+<p>Don't have an account? <a href="{% url shade.social.views.register %}">Create one!</a></p>
+

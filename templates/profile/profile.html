@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}{{ other_user.first_name }} {{ other_user.last_name }}{% endblock %}
+
+{% block content %}
+<h2>{{ other_user.first_name }} {{ other_user.last_name }}</h2>
+<p>
+{% if invited %}
+Awaiting invite confirmation
+{% else %}
+{% if user and user != other_user and other_user not in user.get_profile.friends.all %}
+    <a href="{% url shade.social.views.invite other_user.get_profile.url %}">Add {{ user.first_name }} to friends</a>
+{% endif %}{% endif %}
+</p>
+
+{% if other_user.get_profile.profile_picture %}
+    <p><img src="{{ other_user.get_profile.profile_picture.image.url }}" height="150" width="200"></p>
+{% endif %}
+
+<p><a href="{% url shade.social.views.albums other_user.get_profile.url %}">{{ user.first_name }}'s Pictures</a></p>
+<h3>Information</h3>
+<p>
+    <b>Gender:</b> {{ other_user.get_profile.gender }}<br/>
+    <b>Hometown:</b> {{ other_user.get_profile.hometown }}, {{ other_user.get_profile.home_state }} {{ other_user.get_profile.home_country }}<br />
+    <b>Current Location:</b> {{ other_user.get_profile.current_town }}, {{ other_user.get_profile.current_state }} {{ other_user.get_profile.current_country }}<br />
+</p>
+<h3>Bio</h3>
+<p>{{ other_user.user.get_profile.bio }}</p>
+<h3>Comments</h3>
+{% if form %}
+    <form method="post" action="">
+        {% csrf_token %}
+        {% include "base_form.html" %}
+        <input type="submit" value="Submit">
+    </form>
+{% endif %}
+<br/>
+{% for c in other_user.get_profile.comments.all %}
+    <p>
+    {{ c.post }}<br/>
+    {{ c.author.get_full_name }} on {{ c.sent }}
+    </p>
+{% endfor %}
+{% endblock %}
+
