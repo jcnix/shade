@@ -1,4 +1,5 @@
 *.pyc
+*.swp
 static/media/uploads/*
 deploy.sh
 rsyncignore

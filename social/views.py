@@ -68,7 +68,8 @@ def profile(request, url):
         invited = False
 
     # post a comment
-    if user == other_user or user in other_user.friends.all():
+    if user == other_user or user in other_user.get_profile().friends.all():
+        print "can comment"
         if request.method == 'POST':
             comment = Comment.objects.create(
                     author=user,
@@ -80,6 +81,7 @@ def profile(request, url):
             other_user.get_profile().comments.add(comment)
         form = myforms.CommentForm()
     else:
+        print "can't comment"
         form = None
 
     return render_to_response('profile/profile.html', {'other_user': other_user, 'form': form, 'invited': invited},
