@@ -23,10 +23,16 @@ def dashboard(request):
     user = request.user
     friends = user.get_profile().friends.all()
     updates = []
+    # Add user's friends' status updates
     for f in friends:
         us = f.get_profile().comments.filter(author=f, sent__gte=last_week)
         for u in us:
             updates.append(u)
+
+    # Add user's status updates and comments from friends to user
+    my_comments = user.get_profile().comments.filter(sent__gte=last_week)
+    for c in my_comments:
+        updates.append(c)
 
     updates.sort(key=lambda x: x.sent, reverse=True)
     return render_to_response('dashboard.html', {'updates': updates},
