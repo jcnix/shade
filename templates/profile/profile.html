@@ -9,7 +9,7 @@
 Awaiting invite confirmation
 {% else %}
 {% if user and user != other_user and other_user not in user.get_profile.friends.all %}
-    <a href="{% url shade.social.views.invite other_user.get_profile.url %}">Add {{ user.first_name }} to friends</a>
+    <a href="{% url shade.social.views.invite other_user.get_profile.url %}">Add {{ other_user.first_name }} to friends</a>
 {% endif %}{% endif %}
 </p>
 
@@ -17,7 +17,7 @@ Awaiting invite confirmation
     <p><img src="{{ other_user.get_profile.profile_picture.image.url }}" height="150" width="200"></p>
 {% endif %}
 
-<p><a href="{% url shade.social.views.albums other_user.get_profile.url %}">{{ user.first_name }}'s Pictures</a></p>
+<p><a href="{% url shade.social.views.albums other_user.get_profile.url %}">{{ other_user.first_name }}'s Pictures</a></p>
 <h3>Information</h3>
 <p>
     <b>Gender:</b> {{ other_user.get_profile.gender }}<br/>
