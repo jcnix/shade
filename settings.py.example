@@ -73,7 +73,6 @@ TEMPLATE_LOADERS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'shade.social.contexts.my_user',
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.media',
     'socialauth.context_processors.facebook_api_key',
