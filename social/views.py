@@ -44,12 +44,11 @@ def settings(request):
     old_url = request.user.get_profile().url
     form = myforms.SettingsForm(instance=request.user.get_profile())
 
-    saved = False
     if request.method == 'POST':
         form = myforms.SettingsForm(request.POST, instance=request.user.get_profile())
         if form.is_valid():
             form.save()
-            saved = True
+            return HttpResponseRedirect('/dashboard/')
         else:
             # if the url is invalid, the session user will still
             # try to use the invalid url, so we need to reload
@@ -57,7 +56,7 @@ def settings(request):
             profile = UserProfile.objects.get(url=old_url)
             request.user = profile.user
 
-    return render_to_response('settings.html', {'form': form, 'saved': saved},
+    return render_to_response('settings.html', {'form': form},
             context_instance=RequestContext(request))
 
 @login_required

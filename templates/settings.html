@@ -4,9 +4,6 @@
 
 {% block content %}
 <b>Settings</b>
-{% if saved %}
-<p><font color="red">Settings Saved</font></p>
-{% endif %}
 <form method="post" action="">
     {% csrf_token %}
     {% include "base_form.html" %}
