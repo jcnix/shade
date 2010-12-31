@@ -97,6 +97,7 @@ class Invite(models.Model):
 
 class Event(models.Model):
     title = models.CharField(max_length=50)
+    description = models.TextField()
     attending = models.ManyToManyField(User, related_name='attnd')
     maybe = models.ManyToManyField(User, related_name='attnd_m')
     not_attending = models.ManyToManyField(User, related_name='attend_n')
@@ -122,6 +123,7 @@ class UserProfile(models.Model):
     friends = models.ManyToManyField(User, null=True, blank=True, related_name='friends')
     invites = models.ManyToManyField(Invite, null=True, blank=True, related_name='invites')
     albums = models.ManyToManyField(Album, null=True, blank=True)
+    events = models.ManyToManyField(Event, null=True, blank=True)
     relationship_status = models.ForeignKey(Relationship, null=True, blank=True)
     schools = models.ManyToManyField(School, through=SchoolMembership, null=True, blank=True)
     employers = models.ManyToManyField(Employer, through=EmployerMembership, null=True, blank=True)

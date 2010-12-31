@@ -9,7 +9,7 @@
         <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
         {% block extra_head %}
         {% endblock %}
-        </head>
+    </head>
     <body>
         {% block extra_body %}
         {% endblock %}
@@ -60,6 +60,9 @@
                             {% endwith %}
                         {% else %}
                             No new messages.
+                        {% endif %}
+                        {% if user %}
+                        <p><b><a href="{% url shade.social.views.events %}">Events</a></b></p>
                         {% endif %}
                     {% endif %}
                 </div>

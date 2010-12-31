@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.validators import MinLengthValidator
-from shade.social.models import UserProfile, Message, Comment, Picture
+from shade.social.models import UserProfile, Message, Comment, Picture, Event
 import hashlib
 
 class SettingsForm(forms.ModelForm):
@@ -53,6 +53,11 @@ class PictureForm(forms.ModelForm):
     class Meta:
         model = Picture
         fields = ('image', 'caption',)
+
+class EventForm(forms.ModelForm):
+    class Meta:
+        model = Event
+        fields = ('title', 'description', 'datetime')
 
 class SearchForm(forms.Form):
     name = forms.CharField(required=False)

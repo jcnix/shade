@@ -256,6 +256,26 @@ def ignore_inv(request, url):
     return HttpResponseRedirect('/dashboard/')
 
 @login_required
+def events(request):
+    events = request.user.get_profile().events
+    return render_to_response('events/events.html', {'events': events},
+            context_instance=RequestContext(request))
+
+@login_required
+def create_event(request):
+    user = request.user
+    form = myforms.EventForm()
+    if request.method == 'POST':
+        form = myforms.EventForm(request.POST)
+        if form.is_valid():
+            event = form.save()
+            event.attending.add(user)
+            user.get_profile().events.add(event)
+
+    return render_to_response('events/new_event.html', {'form': form},
+            context_instance=RequestContext(request))
+
+@login_required
 def search(request):
     form = myforms.SearchForm()
     results = None

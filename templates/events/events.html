@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Events{% endblock %}
+
+{% block content %}
+<p><a href="{% url shade.social.views.create_event %}">Create Event</a></p>
+{% for e in events.all %}
+    <p><b>{{ e.title }}<b></p>
+{% endfor %}
+{% endblock %}
+
