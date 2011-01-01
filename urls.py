@@ -27,6 +27,7 @@ urlpatterns = patterns('',
     (r'^inbox/reply/(?P<msg_id>\d+)/$', 'shade.social.views.msg_compose'),
     (r'^events/$', 'shade.social.views.events'),
     (r'^events/new/$', 'shade.social.views.create_event'),
+    (r'^events/(?P<event_id>\d+)/$', 'shade.social.views.event_view'),
     (r'^search/$', 'shade.social.views.search'),
     (r'^philosophy/$', 'shade.social.views.philosophy'),
 

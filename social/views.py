@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from shade.social import forms as myforms
 from shade.social import util
-from shade.social.models import UserProfile, Language, Invite, Message, Comment, Album, Picture
+from shade.social.models import UserProfile, Language, Invite, Message, Comment, Album, Picture, Event
 import hashlib, datetime
 
 LOGIN_REDIRECT_URL = getattr(settings, 'LOGIN_REDIRECT_URL')
@@ -272,6 +272,12 @@ def create_event(request):
             user.get_profile().events.add(event)
 
     return render_to_response('events/new_event.html', {'form': form},
+            context_instance=RequestContext(request))
+
+@login_required
+def event_view(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+    return render_to_response('events/event.html', {'event': event},
             context_instance=RequestContext(request))
 
 @login_required
