@@ -265,7 +265,8 @@ def create_event(request):
     user = request.user
     form = myforms.EventForm()
     if request.method == 'POST':
-        form = myforms.EventForm(request.POST)
+        event = Event(author=user)
+        form = myforms.EventForm(request.POST, instance=event)
         if form.is_valid():
             event = form.save()
             event.attending.add(user)

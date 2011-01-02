@@ -98,6 +98,7 @@ class Invite(models.Model):
 class Event(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
+    author = models.ForeignKey(User, related_name='author')
     attending = models.ManyToManyField(User, related_name='attnd')
     maybe = models.ManyToManyField(User, related_name='attnd_m')
     not_attending = models.ManyToManyField(User, related_name='attend_n')
