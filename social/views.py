@@ -271,6 +271,7 @@ def create_event(request):
             event = form.save()
             event.attending.add(user)
             user.get_profile().events.add(event)
+            return HttpResponseRedirect('/events/%d/' % event.id)
 
     return render_to_response('events/new_event.html', {'form': form},
             context_instance=RequestContext(request))
