@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from shade.social import forms as myforms
 from shade.social import util
-from shade.social.models import UserProfile, Language, Invite, Message, Comment, Album, Picture, Event
+from shade.social.models import UserProfile, Language, Invite, Message, Comment, Album, Picture, Event, EventInvite
 import hashlib, datetime
 
 LOGIN_REDIRECT_URL = getattr(settings, 'LOGIN_REDIRECT_URL')
@@ -278,8 +278,27 @@ def create_event(request):
 
 @login_required
 def event_view(request, event_id):
+    user = request.user
     event = get_object_or_404(Event, id=event_id)
-    return render_to_response('events/event.html', {'event': event},
+
+    # Get list of users not invited yet
+    invitable = set(user.get_profile().friends.all())
+    invitable = invitable.difference(set(event.attending.all()))
+    invitable = invitable.difference(set(event.maybe.all()))
+    invitable = invitable.difference(set(event.not_attending.all()))
+    invitable = invitable.difference(set(event.awaiting.all()))
+
+    if request.method == 'POST':
+        to_invite = request.POST.getlist('invites')
+        now = datetime.datetime.now()
+        for u in to_invite:
+            other_user = User.objects.get(id=u)
+            inv = EventInvite.objects.create(user=other_user, sent=now, event=event)
+            inv.save()
+            event.awaiting.add(other_user)
+            other_user.get_profile().event_invites.add(inv)
+
+    return render_to_response('events/event.html', {'event': event, 'invitable': invitable},
             context_instance=RequestContext(request))
 
 @login_required

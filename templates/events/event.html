@@ -35,5 +35,18 @@
 {% endfor %}
 </p>
 
+{% if user == event.author and invitable %}
+    <p><h3>Invite Friends</h3></p>
+    <p>
+    <form method="post" action="">
+        {% csrf_token %}
+        {% for f in invitable %}
+            <input type="checkbox" name="invites" value="{{ f.id }}" />{{ f.get_full_name }}<br/>
+        {% endfor %}
+        <input type="submit" value="Submit" />
+    </form>
+    </p>
+{% endif %}
+
 {% endblock %}
 

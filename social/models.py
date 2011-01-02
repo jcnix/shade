@@ -90,9 +90,15 @@ class Album(models.Model):
     name = models.CharField(max_length=40)
     pictures = models.ManyToManyField('Picture', null=True, blank=True)
 
+#Friend invite
 class Invite(models.Model):
     user = models.ForeignKey(User)
     sender = models.ForeignKey(User, related_name='sender')
+    sent = models.DateTimeField()
+
+class EventInvite(models.Model):
+    user = models.ForeignKey(User)
+    event = models.ForeignKey('Event')
     sent = models.DateTimeField()
 
 class Event(models.Model):
@@ -123,6 +129,7 @@ class UserProfile(models.Model):
     current_state = models.CharField(max_length=30, null=True, blank=True)
     friends = models.ManyToManyField(User, null=True, blank=True, related_name='friends')
     invites = models.ManyToManyField(Invite, null=True, blank=True, related_name='invites')
+    event_invites = models.ManyToManyField(EventInvite, null=True, blank=True, related_name='event_invites')
     albums = models.ManyToManyField(Album, null=True, blank=True)
     events = models.ManyToManyField(Event, null=True, blank=True)
     relationship_status = models.ForeignKey(Relationship, null=True, blank=True)
