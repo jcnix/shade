@@ -10,28 +10,28 @@
 <p><h3>Attending</h3></p>
 <p>
 {% for u in event.attending.all %}
-    <a href="{ url shade.social.views.profile u.get_profile.url %}">{{ u.get_full_name }}</a><br/>
+    <a href="{% url shade.social.views.profile u.get_profile.url %}">{{ u.get_full_name }}</a><br/>
 {% endfor %}
 </p>
 
 <p><h3>Possibly Attending</h3></p>
 <p>
 {% for u in event.maybe.all %}
-    <a href="{ url shade.social.views.profile u.get_profile.url %}">{{ u.get_full_name }}</a><br/>
+    <a href="{% url shade.social.views.profile u.get_profile.url %}">{{ u.get_full_name }}</a><br/>
 {% endfor %}
 </p>
 
 <p><h3>Not Attending</h3></p>
 <p>
 {% for u in event.not_attending.all %}
-    <a href="{ url shade.social.views.profile u.get_profile.url %}">{{ u.get_full_name }}</a><br/>
+    <a href="{% url shade.social.views.profile u.get_profile.url %}">{{ u.get_full_name }}</a><br/>
 {% endfor %}
 </p>
 
 <p><h3>Awaiting Response</h3></p>
 <p>
 {% for u in event.awaiting.all %}
-    <a href="{ url shade.social.views.profile u.get_profile.url %}">{{ u.get_full_name }}</a><br/>
+    <a href="{% url shade.social.views.profile u.get_profile.url %}">{{ u.get_full_name }}</a><br/>
 {% endfor %}
 </p>
 
