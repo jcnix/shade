@@ -35,7 +35,8 @@ def dashboard(request):
         updates.append(c)
 
     updates.sort(key=lambda x: x.sent, reverse=True)
-    return render_to_response('dashboard.html', {'updates': updates},
+    form = myforms.CommentForm()
+    return render_to_response('dashboard.html', {'updates': updates, 'form': form},
             context_instance=RequestContext(request))
 
 @login_required
@@ -74,7 +75,21 @@ def profile(request, url):
         invited = False
 
     # post a comment
-    if user == other_user or user in other_user.get_profile().friends.all():
+    if util.can_users_interract(user, other_user):
+        form = myforms.CommentForm()
+    else:
+        form = None
+
+    return render_to_response('profile/profile.html', {'other_user': other_user, 'form': form, 'invited': invited},
+            context_instance=RequestContext(request))
+
+@login_required
+def post_comment(request, url):
+    user = request.user
+    prof = get_object_or_404(UserProfile, url=url)
+    other_user = prof.user
+
+    if util.can_users_interract(user, other_user):
         if request.method == 'POST':
             comment = Comment.objects.create(
                     author=user,
@@ -84,12 +99,7 @@ def profile(request, url):
             form = myforms.CommentForm(request.POST, instance=comment)
             comment = form.save()
             other_user.get_profile().comments.add(comment)
-        form = myforms.CommentForm()
-    else:
-        form = None
-
-    return render_to_response('profile/profile.html', {'other_user': other_user, 'form': form, 'invited': invited},
-            context_instance=RequestContext(request))
+    return HttpResponseRedirect('/profile/'+user.get_profile().url+'/')
 
 @login_required
 def albums(request, url):

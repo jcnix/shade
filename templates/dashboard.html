@@ -12,6 +12,11 @@
     <br/>
 {% endfor %}
 <h3>Updates</h3>
+<form method="post" action="{% url shade.social.views.post_comment user.get_profile.url %}">
+    {% csrf_token %}
+    {% include "base_form.html" %}
+    <input type="submit" value="Submit">
+</form>
 {% for u in updates %}
     <p>
     {{ u.post }}<br/>
