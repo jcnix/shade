@@ -230,8 +230,7 @@ def msg_compose(request, msg_id=0):
             recipient = form.cleaned_data['recipient']
             recipient.get_profile().messages.add(m)
             recipient.get_profile().save()
-        else:
-            return HttpResponse('Oops')
+            return HttpResponseRedirect('/inbox/')
 
     # replying
     if msg_id > 0:
@@ -239,6 +238,7 @@ def msg_compose(request, msg_id=0):
         subject = 'Re: '+m.subject
         msg = Message(recipient=m.author, subject=subject)
         form = myforms.MessageForm(instance=msg)
+        return HttpResponseRedirect('/inbox/')
     else:
         form = myforms.MessageForm()
     form.fields['recipient'].choices = ((u.id, u.get_full_name()) for u in user.get_profile().friends.all())
