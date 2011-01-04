@@ -54,10 +54,8 @@
                         </p>
                         <p>
                         <b><a href="{% url shade.social.views.inbox %}">Messages</a></b><br/>
-                        {% if user.get_profile.messages.all %}
-                            {% with user.get_profile.messages.count as total %}
-                                {{ total }} message{{ total|pluralize }}
-                            {% endwith %}
+                        {% if unread_msg_count %}
+                            {{ unread_msg_count }} message{{ unread_msg_count|pluralize }}
                         {% else %}
                             No new messages.
                         {% endif %}

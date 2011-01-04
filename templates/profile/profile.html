@@ -28,7 +28,7 @@ Awaiting invite confirmation
 <p>{{ other_user.user.get_profile.bio }}</p>
 <h3>Comments</h3>
 {% if form %}
-    <form method="post" action="">
+    <form method="post" action="{% url shade.social.views.post_comment user.get_profile.url %}">
         {% csrf_token %}
         {% include "base_form.html" %}
         <input type="submit" value="Submit">
