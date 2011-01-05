@@ -41,7 +41,7 @@
                     <hr/>
                 </div>
                 <div id="side">
-                    {% if user %}
+                    {% if user.is_authenticated %}
                         <p>
                         <b>Invites</b><br/>
                         {% for inv in user.get_profile.invites.all %}
