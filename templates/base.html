@@ -61,6 +61,14 @@
                         {% endif %}
                         {% if user.is_authenticated %}
                             <p><b><a href="{% url shade.social.views.events %}">Events</a></b></p>
+                            {% for i in user.get_profile.event_invites.all %}
+                                <p>
+                                Invited to: {{ i.event.title }} by {{ i.event.author.get_full_name }} on {{ i.sent }}.<br/>
+                                <a href="{% url shade.social.views.event_accept i.event.id %}">Attending</a><br/>
+                                <a href="{% url shade.social.views.event_maybe i.event.id %}">Possibly Attending</a><br/>
+                                <a href="{% url shade.social.views.event_decline i.event.id %}">Not Attending</a><br/>
+                                </p>
+                            {% endfor %}
                         {% endif %}
                     {% endif %}
                 </div>

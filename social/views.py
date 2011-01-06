@@ -312,6 +312,47 @@ def event_view(request, event_id):
             context_instance=RequestContext(request))
 
 @login_required
+def event_accept(request, event_id):
+    user = request.user
+    event = Event.objects.get(id=event_id)
+    #make sure the user is actually invited
+    for i in user.get_profile().event_invites.all():
+        if i.event == event:
+            event.attending.add(user)
+            event.awaiting.remove(user)
+            user.get_profile().events.add(event)
+            i.delete()
+
+    return HttpResponseRedirect('/dashboard')
+
+@login_required
+def event_maybe(request, event_id):
+    user = request.user
+    event = Event.objects.get(id=event_id)
+    #make sure the user is actually invited
+    for i in user.get_profile().event_invites.all():
+        if i.event == event:
+            event.maybe.add(user)
+            event.awaiting.remove(user)
+            user.get_profile().events.add(event)
+            i.delete()
+
+    return HttpResponseRedirect('/dashboard')
+
+@login_required
+def event_decline(request, event_id):
+    user = request.user
+    event = Event.objects.get(id=event_id)
+    #make sure the user is actually invited
+    for i in user.get_profile().event_invites.all():
+        if i.event == event:
+            event.not_attending.add(user)
+            event.awaiting.remove(user)
+            i.delete()
+
+    return HttpResponseRedirect('/dashboard')
+
+@login_required
 def search(request):
     form = myforms.SearchForm()
     results = None
