@@ -250,7 +250,7 @@ def accept_inv(request, url):
     prof = UserProfile.objects.get(url=url)
     sender = prof.user
 
-    inv = Invite.objects.get(sender=sender)
+    inv = Invite.objects.get(user=user, sender=sender)
     user.get_profile().friends.add(sender)
     sender.get_profile().friends.add(user)
     inv.delete()
@@ -258,9 +258,10 @@ def accept_inv(request, url):
 
 @login_required
 def ignore_inv(request, url):
+    user = request.user
     prof = User.objects.get(url=url)
     sender = prof.user
-    inv = Invite.objects.get(sender=sender)
+    inv = Invite.objects.get(user=user, sender=sender)
     inv.delete()
     return HttpResponseRedirect('/dashboard/')
 
