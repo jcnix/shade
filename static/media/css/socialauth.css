@@ -1,8 +1,3 @@
-body {
-    margin-left: auto;
-    margin-right: auto;
-    width: 950px;
-}
 #openid_choice{
 	margin-top:10px;
 	display: none;
@@ -46,11 +41,8 @@ body {
 	margin: 3px;
 	float: left;
 }
-a.openid_large_btn:focus{
+a.openid_large_btn:focus {
 	outline: none;
-}
-a.openid_large_btn:focus{
-	-moz-outline-style: none;
 }
 .openid_selected{
 	border: 4px solid #DDD;
