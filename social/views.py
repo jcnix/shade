@@ -245,6 +245,15 @@ def msg_compose(request, msg_id=0):
             context_instance=RequestContext(request))
 
 @login_required
+def msg_delete(request, msg_id):
+    user = request.user
+    msg = Message.objects.get(id=msg_id)
+    if msg in user.get_profile().messages.all():
+        user.get_profile().messages.remove(msg)
+        msg.delete()
+    return HttpResponseRedirect('/inbox')
+
+@login_required
 def accept_inv(request, url):
     user = request.user
     prof = UserProfile.objects.get(url=url)
