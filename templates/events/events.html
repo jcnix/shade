@@ -5,7 +5,10 @@
 {% block content %}
 <p><a href="{% url shade.social.views.create_event %}">Create Event</a></p>
 {% for e in events.all %}
-    <p><b><a href="{% url shade.social.views.event_view e.id %}">{{ e.title }}</a><b></p>
+    <p>
+    <b><a href="{% url shade.social.views.event_view e.id %}">{{ e.title }}</a><b> -  
+    {{ e.datetime }}
+    </p>
 {% endfor %}
 {% endblock %}
 
