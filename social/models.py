@@ -102,6 +102,10 @@ class EventInvite(models.Model):
     sent = models.DateTimeField()
 
 class Event(models.Model):
+    class Meta:
+        get_latest_by = 'datetime'
+        ordering = ['-datetime']
+
     title = models.CharField(max_length=50)
     description = models.TextField()
     author = models.ForeignKey(User, related_name='author')
