@@ -73,6 +73,7 @@ TEMPLATE_LOADERS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
+    'shade.social.contexts.upcoming_events',
     'shade.social.contexts.unread_message_count',
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.media',
