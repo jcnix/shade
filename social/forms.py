@@ -7,7 +7,7 @@ import hashlib
 class SettingsForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('url', 'gender', 'hometown', 'home_state', 'home_country',
+        fields = ('url', 'gender', 'birthdate', 'hometown', 'home_state', 'home_country',
                 'current_town', 'current_state', 'current_country',
                 'bio',)
 

@@ -73,14 +73,17 @@ def profile(request, url):
     except Invite.DoesNotExist:
         invited = False
 
+    age = util.get_age(other_user.get_profile().birthdate)
+
     # post a comment
     if util.can_users_interract(user, other_user):
         form = myforms.CommentForm()
     else:
         form = None
 
-    return render_to_response('profile/profile.html', {'other_user': other_user, 'form': form, 'invited': invited},
-            context_instance=RequestContext(request))
+    return render_to_response('profile/profile.html', {'other_user': other_user, 
+        'form': form, 'invited': invited, 'age': age},
+        context_instance=RequestContext(request))
 
 @login_required
 def post_comment(request, url):
