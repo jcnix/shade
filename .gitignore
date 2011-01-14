@@ -1,6 +1,7 @@
 *.pyc
 *.swp
 static/media/uploads/*
+static/media/images/logo.png
 deploy.sh
 rsyncignore
 settings.py

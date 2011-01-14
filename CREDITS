@@ -1,3 +1,8 @@
+Thanks to my friend Alejandro for the css sheet and logo!
+(static/media/css/shade.css)
+(static/media/images/logo.png)
+
+
 I'm using Django-SocialAuth for authentication.
 http://github.com/uswaretech/Django-Socialauth
 
@@ -6,5 +11,5 @@ static/media/css/openid.css
 static/media/css/socialauth.css
 static/media/js/jquery-1.2.6.min.js
 static/media/js/openid-jquery.js
-everything in static/media/images
+everything in static/media/images except logo.png
 
