@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from shade.social import forms as myforms
 from shade.social import util
-from shade.social.models import UserProfile, Language, Invite, Message, Comment, Album, Picture, Event, EventInvite
+from shade.social.models import UserProfile, Language, Invite, Message, Comment, SubComment, Album, Picture, Event, EventInvite
 import hashlib, datetime
 
 LOGIN_REDIRECT_URL = getattr(settings, 'LOGIN_REDIRECT_URL')
@@ -102,6 +102,26 @@ def post_comment(request, url):
             comment = form.save()
             other_user.get_profile().comments.add(comment)
     return HttpResponseRedirect('/profile/'+user.get_profile().url+'/')
+
+@login_required
+def reply_to_comment(request, url, comment_id):
+    user = request.user
+    prof = get_object_or_404(UserProfile, url=url)
+    other_user = prof.user
+
+    if request.method == 'POST':
+        if util.can_users_interract(user, other_user):
+            comment = get_object_or_404(Comment, id=comment_id)
+            subcomment = SubComment.objects.create(
+                    author=user,
+                    post=request.POST['post'],
+                    read=False,
+                    sent=datetime.datetime.now(),
+                    parent=comment,
+                    )
+            comment.subcomments.add(subcomment)
+
+    return HttpResponseRedirect('/profile/'+other_user.get_profile().url)
 
 @login_required
 def albums(request, url):

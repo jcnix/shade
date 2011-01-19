@@ -76,6 +76,7 @@ class Comment(models.Model):
     post = models.CharField(max_length=500)
     read = models.BooleanField()
     sent = models.DateTimeField()
+    subcomments = models.ManyToManyField('SubComment', null=True, blank=True)
 
 class SubComment(Comment):
     parent = models.ForeignKey(Comment, related_name='parent')
