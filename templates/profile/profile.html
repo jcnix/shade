@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load markup %}
 
 {% block title %}{{ other_user.first_name }} {{ other_user.last_name }}{% endblock %}
 
@@ -39,11 +40,11 @@ Awaiting invite confirmation
 {% for c in other_user.get_profile.comments.all %}
     <div class="comment" id="{{ c.id }}">
         <p>
-        {{ c.post }}<br/>
+        {{ c.post|markdown }}<br/>
         {{ c.author.get_full_name }} on {{ c.sent }}
         {% for s in c.subcomments.all %}
             <div class="subcomment">
-            {{ s.post}}<br/>
+            {{ s.post|markdown }}<br/>
             {{ s.author.get_full_name }} on {{ s.sent }}
             </div>
         {% endfor %}
