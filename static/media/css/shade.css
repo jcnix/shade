@@ -158,6 +158,18 @@ td {padding:0.5em;}
     padding:    10px 60px;
 }
 
+.comment {
+    background: #383838;
+    margin: 10px;
+    padding: 5px;
+}
+
+.subcomment {
+    background: #282828;
+    margin: 10px 0px 0px 25px;
+    padding: 5px;
+}
+
 .row1 {
     background: #383838;
 }

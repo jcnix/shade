@@ -37,15 +37,17 @@ Awaiting invite confirmation
 {% endif %}
 <br/>
 {% for c in other_user.get_profile.comments.all %}
-    <div id="{{ c.id }}">
+    <div class="comment" id="{{ c.id }}">
         <p>
         {{ c.post }}<br/>
         {{ c.author.get_full_name }} on {{ c.sent }}
         {% for s in c.subcomments.all %}
-            <br/>
+            <div class="subcomment">
             {{ s.post}}<br/>
             {{ s.author.get_full_name }} on {{ s.sent }}
+            </div>
         {% endfor %}
+        <br/>
         <a href="javascript:showSubcommentForm('{{ c.id }}', '{{ other_user.get_profile.url }}')">Reply</a>
         </p>
     </div>
