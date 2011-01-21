@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load markup %}
 
 {% block title %}Image{% endblock %}
 
@@ -13,5 +14,18 @@
 {% endif %}
 <p><img src="{{ img.image.url }}"><p>
 <p>{{ img.caption }}</p>
+<form id="comment" method="post" action="{% url shade.social.views.comment_img other_user.get_profile.url img.id %}">
+    {% csrf_token %}
+    {% include "base_form.html" %}
+    <input type="submit" value="Submit">
+</form>
+{% for c in img.comments.all %}
+    <div class="comment" id="{{ c.id }}">
+        <p>
+        {{ c.post|markdown }}<br/>
+        {{ c.author.get_full_name }} on {{ c.sent }}
+        </p>
+    </div>
+{% endfor %}
 {% endblock %}
 

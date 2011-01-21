@@ -86,6 +86,7 @@ class Picture(models.Model):
     caption = models.CharField(max_length=140, null=True, blank=True)
     tagged = models.ManyToManyField(User, null=True, blank=True)
     uploaded = models.DateField()
+    comments = models.ManyToManyField(Comment, null=True, blank=True)
 
 class Album(models.Model):
     name = models.CharField(max_length=40)

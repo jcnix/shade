@@ -166,9 +166,10 @@ def view_img(request, url, img_id):
     prof = UserProfile.objects.get(url=url)
     other_user = prof.user
     user = request.user
+    form = myforms.CommentForm()
     if user == other_user or user in other_user.get_profile().friends.all():
         img = Picture.objects.get(id=img_id)
-        return render_to_response('profile/view_img.html', {'img': img, 'other_user': other_user},
+        return render_to_response('profile/view_img.html', {'img': img, 'other_user': other_user, 'form': form},
             context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/dashboard/')
@@ -207,6 +208,24 @@ def delete_img(request, url, img_id):
             break
 
     return HttpResponseRedirect('/profile/'+url+'/albums/'+str(a.id))
+
+@login_required
+def comment_img(request, url, img_id):
+    user = request.user
+    prof = UserProfile.objects.get(url=url)
+    other_user = prof.user
+    img = get_object_or_404(Picture, id=img_id)
+    if util.can_users_interract(user, other_user):
+        if request.method == 'POST':
+            comment = Comment.objects.create(
+                    author=user,
+                    read=False,
+                    sent = datetime.datetime.now()
+                    )
+            form = myforms.CommentForm(request.POST, instance=comment)
+            comment = form.save()
+            img.comments.add(comment)
+    return HttpResponseRedirect('/profile/'+url+'/images/'+str(img_id)+'/view/')
 
 @login_required
 def set_profile_pic(request, url, img_id):
