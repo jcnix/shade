@@ -111,6 +111,7 @@ INSTALLED_APPS = (
     'shade.social',
     'socialauth',
     'openid_consumer',
+    'south',
 )
 
 AUTH_PROFILE_MODULE = 'social.UserProfile'
