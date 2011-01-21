@@ -204,8 +204,9 @@ def delete_img(request, url, img_id):
 
             a.pictures.remove(img)
             img.delete()
+            break
 
-    return HttpResponseRedirect('/profile/'+url+'/')
+    return HttpResponseRedirect('/profile/'+url+'/albums/'+str(a.id))
 
 @login_required
 def set_profile_pic(request, url, img_id):
