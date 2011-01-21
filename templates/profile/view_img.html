@@ -6,7 +6,8 @@
 {% if user == other_user %}
     <div id="nav">
         <ul>
-            <li><a href="{% url shade.social.views.set_profile_pic img.id %}">Set as profile picture</a></li>
+            <li><a href="{% url shade.social.views.set_profile_pic user.get_profile.url img.id %}">Set as profile picture</a></li>
+            <li><a href="{% url shade.social.views.delete_img user.get_profile.url img.id %}">Delete</a></li>
         </ul>
     </div>
 {% endif %}

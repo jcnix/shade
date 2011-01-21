@@ -190,7 +190,25 @@ def upload_img(request, album_id):
             context_instance=RequestContext(request))
 
 @login_required
-def set_profile_pic(request, img_id):
+def delete_img(request, url, img_id):
+    user = request.user
+    profile = user.get_profile()
+    user_imgs = user.get_profile().albums
+    img = get_object_or_404(Picture, id=img_id)
+
+    for a in user_imgs.all():
+        if img in a.pictures.all():
+            if img == profile.profile_picture:
+                profile.profile_picture = None
+                profile.save()
+
+            a.pictures.remove(img)
+            img.delete()
+
+    return HttpResponseRedirect('/profile/'+url+'/')
+
+@login_required
+def set_profile_pic(request, url, img_id):
     user = request.user
     prof = user.get_profile()
     user_imgs = prof.albums
