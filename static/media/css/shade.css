@@ -54,11 +54,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 code {
-    border-bottom:2px solid #252525;
-    border-top: 2px solid #252525;
-    display:    block;
-    margin:     0.6em 0 1.6em;
-    padding:    0.8em 1em 0.2em 46px;
+    background: #181818;
 }
 
 blockquote {
