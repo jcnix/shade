@@ -3,9 +3,13 @@
 {% block title %}{{ other_user.first_name }}'s Albums{% endblock %}
 
 {% block content %}
-<p><b>Albums</b></p>
+<h1>Albums</h1>
 {% if other_user == user %}
-    <p><a href="{% url shade.social.views.create_album user.get_profile.url %}">Create Album</a></p>
+    <div id="nav">
+        <ul>
+            <li><a href="{% url shade.social.views.create_album user.get_profile.url %}">Create Album</a></li>
+        </ul>
+    </div>
 {% endif %}
 {% for a in other_user.get_profile.albums.all %}
     <p><a href="{% url shade.social.views.album other_user.get_profile.url a.id %}">{{ a.name }}</a></p>

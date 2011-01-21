@@ -3,9 +3,13 @@
 {% block title %}{{ album.name }}{% endblock %}
 
 {% block content %}
-<p><b>{{ album.name }}</b></p>
-{% if album in user.get_profile.albums.all %}
-    <p><a href="{% url shade.social.views.upload_img album.id %}">Upload Image</a></p>
+<h1>{{ album.name }}</h1>
+{% if user == other_user %}
+    <div id="nav">
+        <ul>
+            <li><a href="{% url shade.social.views.upload_img album.id %}">Upload Image</a></li>
+        </ul>
+    </div>
 {% endif %}
 
 <p>

@@ -4,7 +4,11 @@
 
 {% block content %}
 {% if user == other_user %}
-    <p><a href="{% url shade.social.views.set_profile_pic img.id %}">Set as profile picture</a></p>
+    <div id="nav">
+        <ul>
+            <li><a href="{% url shade.social.views.set_profile_pic img.id %}">Set as profile picture</a></li>
+        </ul>
+    </div>
 {% endif %}
 <p><img src="{{ img.image.url }}"><p>
 <p>{{ img.caption }}</p>
