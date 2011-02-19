@@ -60,10 +60,13 @@ def register(request):
                 user.last_name= ln
                 user.save()
                 return HttpResponseRedirect('/')
+            else:
+                return render_to_response('register.html', {'form': form},
+                    context_instance=RequestContext(request))
         else:
             form = myforms.RegisterForm()
             return render_to_response('register.html', {'form': form},
-            context_instance=RequestContext(request))
+                context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/')
 
