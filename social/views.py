@@ -59,7 +59,6 @@ def register(request):
                 user.first_name = fn
                 user.last_name= ln
                 user.save()
-                auth_login(request, user)
                 return HttpResponseRedirect('/')
         else:
             form = myforms.RegisterForm()
