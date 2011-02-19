@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     # Example:
     (r'^$', 'shade.social.views.index'),
     (r'^login/', 'shade.social.views.login'),
+    (r'^logout/', 'shade.social.views.logout'),
     (r'^register/', 'shade.social.views.register'),
     (r'^dashboard/$', 'shade.social.views.dashboard'),
     (r'^settings/$', 'shade.social.views.settings'),
