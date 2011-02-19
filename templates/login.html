@@ -1,32 +1,15 @@
-{% extends "socialauth/login_page.html" %}
+{% extends "base.html" %}
 
 {% block title %}Login{% endblock %}
 
-{% block extra_body %}
-{% if FACEBOOK_APP_ID %}
-<div id="fb-root"></div>
-<script>
-    window.fbAsyncInit = function() {
-        FB.init({appId: '{{ FACEBOOK_APP_ID }}', status: true, cookie: true, xfbml: true});
-        FB.Event.subscribe('auth.sessionChange', function(response) {
-            if (response.session) {
-                window.location = '{% url socialauth_facebook_login_done %}';
-            }
-        });
-    };
-    (function() {
-        var e = document.createElement('script');
-        e.type = 'text/javascript';
-        e.src = document.location.protocol +
-        '//connect.facebook.net/en_US/all.js';
-        e.async = true;
-        document.getElementById('fb-root').appendChild(e);
-    }());
-</script>
-{% endif %}
-{% endblock %}
-
 {% block content %}
 <p><b><a href="{% url shade.social.views.philosophy %}">The Shade Philosophy</a></b></p>
+<form method="post" action="">
+    {% csrf_token %}
+    {% include "base_form.html"%}
+    <input type="submit" value="Submit">
+</form>
+<p>Don't have an account? <a href="{% url shade.social.views.register %}">Register</a>.
+
 {% endblock %}
 

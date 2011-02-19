@@ -1,6 +1,5 @@
 from django.conf.urls.defaults import *
 from django.conf import settings
-import socialauth
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -9,6 +8,8 @@ import socialauth
 urlpatterns = patterns('',
     # Example:
     (r'^$', 'shade.social.views.index'),
+    (r'^login/', 'shade.social.views.login'),
+    (r'^register/', 'shade.social.views.register'),
     (r'^dashboard/$', 'shade.social.views.dashboard'),
     (r'^settings/$', 'shade.social.views.settings'),
     (r'^profile/(?P<url>\w+)/$', 'shade.social.views.profile'),
@@ -38,10 +39,6 @@ urlpatterns = patterns('',
     (r'^events/(?P<event_id>\d+)/decline/$', 'shade.social.views.event_decline'),
     (r'^search/$', 'shade.social.views.search'),
     (r'^philosophy/$', 'shade.social.views.philosophy'),
-
-    # OpenID
-    (r'^login/', 'shade.social.views.index'),
-    (r'^accounts/', include('socialauth.urls')),
 
     (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/shade/favicon.ico'}),
     # Uncomment the next line to enable the admin:

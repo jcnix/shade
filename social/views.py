@@ -1,4 +1,6 @@
 from django.conf import settings
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
@@ -9,11 +11,62 @@ from shade.social import util
 from shade.social.models import UserProfile, Language, Invite, Message, Comment, SubComment, Album, Picture, Event, EventInvite
 import hashlib, datetime
 
-LOGIN_REDIRECT_URL = getattr(settings, 'LOGIN_REDIRECT_URL')
-
 def index(request):
-    return render_to_response('login.html', {'next': request.GET.get('next', LOGIN_REDIRECT_URL)},
+    if request.user.is_authenticated():
+        return HttpResponseRedirect('/dashboard')
+    else:
+        return HttpResponseRedirect('/login')
+
+def login(request):
+    if not request.user.is_authenticated():
+        if request.method == 'POST':
+            form = myforms.LoginForm(request.POST)
+            if form.is_valid():
+                e = form.cleaned_data['email']
+                p = form.cleaned_data['password']
+                print p
+                user = authenticate(username=e, password=p)
+                if user is not None:
+                    auth_login(request, user)
+                    return HttpResponseRedirect('/dashboard/')
+                else:
+                    return HttpResponse('fail')
+        else:
+            form = myforms.LoginForm()
+            return render_to_response('login.html', {'form': form},
+                context_instance=RequestContext(request))
+    else:
+        return HttpResponseRedirect('/')
+
+def logout(request):
+    auth_logout(request)
+    return HttpResponseRedirect('/login/')
+
+def register(request):
+    if not request.user.is_authenticated():
+        if request.method == 'POST':
+            form = myforms.RegisterForm(request.POST)
+            if form.is_valid():
+                e = form.cleaned_data['email']
+                p = form.cleaned_data['password']
+                fn = form.cleaned_data['first_name']
+                ln = form.cleaned_data['last_name']
+                user = User.objects.create_user(
+                        username=e,
+                        email=e,
+                        password=p
+                        )
+                user.first_name = fn
+                user.last_name= ln
+                user.save()
+                auth_login(request, user)
+                return HttpResponseRedirect('/')
+        else:
+            form = myforms.RegisterForm()
+            return render_to_response('register.html', {'form': form},
             context_instance=RequestContext(request))
+    else:
+        return HttpResponseRedirect('/')
 
 @login_required
 def dashboard(request):
