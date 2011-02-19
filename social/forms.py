@@ -14,6 +14,16 @@ class RegisterForm(forms.Form):
     first_name = forms.CharField()
     last_name = forms.CharField()
 
+    def clean(self):
+        email = self.cleaned_data['email']
+        try:
+            u = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return self.cleaned_data
+
+        self._errors['email'] = [u'Email is already in use']
+        return self.cleaned_data
+
 class SettingsForm(forms.ModelForm):
     class Meta:
         model = UserProfile
