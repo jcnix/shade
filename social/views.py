@@ -179,6 +179,16 @@ def reply_to_comment(request, url, comment_id):
     return HttpResponseRedirect('/profile/'+other_user.get_profile().url)
 
 @login_required
+def delete_comment(request, url, comment_id):
+    prof = request.user.get_profile()
+    comment = Comment.objects.get(id=comment_id)
+    if comment in prof.comments.all():
+        prof.comments.remove(comment)
+        comment.delete()
+
+    return HttpResponseRedirect('/dashboard/')
+
+@login_required
 def albums(request, url):
     user = request.user
     prof = get_object_or_404(UserProfile, url=url)

@@ -51,6 +51,9 @@
         {% endfor %}
         <br/>
         <a href="javascript:showSubcommentForm('{{ c.id }}', '{{ other_user.get_profile.url }}')">Reply</a>
+        {% if user == other_user %}
+            <a href="{% url shade.social.views.delete_comment user.get_profile.url c.id %}">Delete</a>
+        {% endif %}
         </p>
     </div>
 {% endfor %}
