@@ -17,11 +17,8 @@
     {% include "base_form.html" %}
     <input type="submit" value="Submit">
 </form>
-{% for u in updates %}
-    <p>
-    {{ u.post }}<br/>
-    {{ u.author.get_full_name }} on {{ u.sent }}
-    </p>
+{% for c in updates %}
+    {% include "profile/comment.html" %}
 {% endfor %}
 </p>
 {% endblock %}

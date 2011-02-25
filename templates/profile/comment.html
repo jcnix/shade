@@ -1,0 +1,18 @@
+{% load markup %}
+<div class="comment" id="{{ c.id }}">
+    <p>
+    {{ c.post|markdown }}<br/>
+    {{ c.author.get_full_name }} on {{ c.sent }}
+    {% for s in c.subcomments.all %}
+    <div class="subcomment">
+        {{ s.post|markdown }}<br/>
+        {{ s.author.get_full_name }} on {{ s.sent }}
+    </div>
+    {% endfor %}
+    <br/>
+    <a href="javascript:showSubcommentForm('{{ c.id }}', '{{ other_user.get_profile.url }}')">Reply</a>
+    {% if user == other_user or user == c.author %}
+        <a href="{% url shade.social.views.delete_comment user.get_profile.url c.id %}">Delete</a>
+    {% endif %}
+    </p>
+</div>
