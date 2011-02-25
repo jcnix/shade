@@ -156,7 +156,7 @@ def post_comment(request, url):
             form = myforms.CommentForm(request.POST, instance=comment)
             comment = form.save()
             other_user.get_profile().comments.add(comment)
-    return HttpResponseRedirect('/profile/'+user.get_profile().url+'/')
+    return HttpResponseRedirect('/profile/'+other_user.get_profile().url+'/')
 
 @login_required
 def reply_to_comment(request, url, comment_id):
