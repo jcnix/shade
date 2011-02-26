@@ -1,6 +1,5 @@
 from django.conf import settings
-from django.contrib.auth import authenticate
-from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
@@ -25,9 +24,9 @@ def login(request):
                 e = form.cleaned_data['email']
                 p = form.cleaned_data['password']
                 print p
-                user = authenticate(username=e, password=p)
+                user = auth.authenticate(username=e, password=p)
                 if user is not None:
-                    auth_login(request, user)
+                    auth.login(request, user)
                     return HttpResponseRedirect('/dashboard/')
                 else:
                     return HttpResponse('fail')
@@ -39,7 +38,7 @@ def login(request):
         return HttpResponseRedirect('/')
 
 def logout(request):
-    auth_logout(request)
+    auth.logout(request)
     return HttpResponseRedirect('/login/')
 
 def register(request):
@@ -112,7 +111,24 @@ def settings(request):
             profile = UserProfile.objects.get(url=old_url)
             request.user = profile.user
 
-    return render_to_response('settings.html', {'form': form},
+    return render_to_response('settings/settings.html', {'form': form},
+            context_instance=RequestContext(request))
+
+@login_required
+def change_pass(request):
+    form = myforms.ChangePassForm()
+    if request.method == 'POST':
+        form = myforms.ChangePassForm(request.POST)
+        if form.is_valid():
+            user = request.user
+            if not auth.models.check_password(form.cleaned_data['old_pass'], user.password):
+                form._errors['old_pass'] = [u'Old password is incorrect']
+            else:
+                user.set_password(form.cleaned_data['new_pass1'])
+                user.save()
+                return HttpResponseRedirect('/dashboard/')
+
+    return render_to_response('settings/change_pass.html', {'form': form},
             context_instance=RequestContext(request))
 
 @login_required

@@ -37,6 +37,19 @@ class SettingsForm(forms.ModelForm):
             self._errors['url'] = [u'URL cannot contain spaces.']
         return self.cleaned_data
 
+class ChangePassForm(forms.Form):
+    old_pass = forms.CharField(widget=forms.PasswordInput)
+    new_pass1 = forms.CharField(widget=forms.PasswordInput)
+    new_pass2 = forms.CharField(widget=forms.PasswordInput)
+
+    def clean(self):
+        super(forms.Form, self).clean()
+        pass1 = self.cleaned_data['new_pass1']
+        pass2 = self.cleaned_data['new_pass2']
+        if pass1 != pass2:
+            self._errors['new_pass1'] = [u'Passwords do not match.']
+        return self.cleaned_data
+
 class MessageForm(forms.ModelForm):
     class  Meta:
         model = Message
