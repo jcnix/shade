@@ -29,6 +29,7 @@
 </p>
 <h3>Bio</h3>
 <p>{{ other_user.get_profile.bio|markdown }}</p>
+{% endif %}
 <h3>Comments</h3>
 {% if form %}
     <form id="comment" method="post" action="{% url shade.social.views.post_comment other_user.get_profile.url %}">
@@ -38,9 +39,11 @@
     </form>
 {% endif %}
 <br/>
+
 {% for c in other_user.get_profile.comments.all %}
-    {% include "profile/comment.html" %}
+    {% if c.public or user == other_user or user in other_user.get_profile.friends.all %}
+        {% include "profile/comment.html" %}
+    {% endif %}
 {% endfor %}
-{% endif %}
 {% endblock %}
 
