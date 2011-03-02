@@ -131,26 +131,30 @@ def change_pass(request):
     return render_to_response('settings/change_pass.html', {'form': form},
             context_instance=RequestContext(request))
 
-@login_required
 def profile(request, url):
     user = request.user
     prof = get_object_or_404(UserProfile, url=url)
     other_user = prof.user
 
-    #check if we've invited the user to be our friend
-    try:
-        inv = other_user.get_profile().invites.get(sender=user)
-        invited = True
-    except Invite.DoesNotExist:
-        invited = False
+    form = None
+    age = None
+    invited = False
 
-    age = util.get_age(other_user.get_profile().birthdate)
+    if user.is_authenticated():
+        #check if we've invited the user to be our friend
+        try:
+            inv = other_user.get_profile().invites.get(sender=user)
+            invited = True
+        except Invite.DoesNotExist:
+            invited = False
 
-    # post a comment
-    if util.can_users_interract(user, other_user):
-        form = myforms.CommentForm()
-    else:
-        form = None
+        age = util.get_age(other_user.get_profile().birthdate)
+
+        # post a comment
+        if util.can_users_interract(user, other_user):
+            form = myforms.CommentForm()
+        else:
+            form = None
 
     return render_to_response('profile/profile.html', {'other_user': other_user, 
         'form': form, 'invited': invited, 'age': age},

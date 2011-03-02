@@ -9,9 +9,14 @@
 {% if invited %}
     Awaiting invite confirmation
 {% else %}
-{% if user != other_user and user not in other_user.get_profile.friends.all %}
-    <a href="{% url shade.social.views.invite other_user.get_profile.url %}">Add {{ other_user.first_name }} to friends</a>
-{% endif %}{% endif %}
+{% if user.is_authenticated %}
+    {%if user != other_user and user not in other_user.get_profile.friends.all %}
+        <a href="{% url shade.social.views.invite other_user.get_profile.url %}">Add {{ other_user.first_name }} to your friends</a>
+    {% endif %}
+{% else %}
+    <a href="{% url shade.social.views.login %}">Login</a> to add {{other_user.first_name}} to your friends.
+{% endif %}
+{% endif %}
 </p>
 
 {% if user == other_user or user in other_user.get_profile.friends.all %}
