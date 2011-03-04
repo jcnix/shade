@@ -25,6 +25,7 @@
 {% endif %}
 
 <p><a href="{% url shade.social.views.albums other_user.get_profile.url %}">{{ other_user.first_name }}'s Pictures</a></p>
+<p><a href="{% url shade.social.views.view_friends other_user.get_profile.url %}">{{ other_user.first_name }}'s Friends</a></p>
 <h3>Information</h3>
 <p>
     <b>Gender:</b> {{ other_user.get_profile.gender }}<br/>

@@ -220,6 +220,16 @@ def albums(request, url):
     return HttpResponseRedirect('/')
 
 @login_required
+def view_friends(request, url):
+    user = request.user
+    prof = get_object_or_404(UserProfile, url=url)
+    other_user = prof.user
+
+    if util.can_users_interract(user, other_user):
+        return render_to_response('profile/friends.html', {'other_user': other_user},
+                context_instance=RequestContext(request))
+
+@login_required
 def create_album(request, url):
     user = request.user
     if request.method == 'POST':
