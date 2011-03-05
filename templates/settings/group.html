@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Group{% endblock %}
+
+{% block extra_head %}
+{{ form.media }}
+<link type="text/css" rel="stylesheet" href="/shade/css/admin.css" />-
+<script type="text/javascript" src="/shade/js/gettext.js"></script>
+{% endblock %}
+
+{% block content %}
+<form method="post" action="">
+    {% csrf_token %}
+    {% include "base_form.html" %}
+    <input type="submit" value="Submit"/>
+</form>
+{% endblock %}
+

@@ -7,6 +7,7 @@
 <p>Profile URL: http://shade.casey-jones.org{% url shade.social.views.profile user.get_profile.url %}</p>
 <h3>Friends</h3>
 <p>
+<a href="{% url shade.social.views.manage_friends %}">Manage Friends</a><br/>
 {% for f in user.get_profile.friends.all %}
     <a href="{% url shade.social.views.profile f.get_profile.url %}">{{ f.get_profile }}</a>
     <br/>

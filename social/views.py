@@ -7,7 +7,9 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from shade.social import forms as myforms
 from shade.social import util
-from shade.social.models import UserProfile, Language, Invite, Message, Comment, SubComment, Album, Picture, Event, EventInvite
+from shade.social.models import UserProfile, Language, Invite, Message
+from shade.social.models import Comment, SubComment, Album, Picture, Event
+from shade.social.models import EventInvite, Group
 import hashlib, datetime
 
 def index(request):
@@ -112,6 +114,45 @@ def settings(request):
             request.user = profile.user
 
     return render_to_response('settings/settings.html', {'form': form},
+            context_instance=RequestContext(request))
+
+@login_required
+def manage_friends(request):
+    return render_to_response('settings/friends.html', {},
+            context_instance=RequestContext(request))
+
+@login_required
+def manage_friend(request, id):
+    other_user = get_object_or_404(User, pk=id)
+    return render_to_response('settings/friend.html', {'friend': other_user},
+            context_instance=RequestContext(request))
+
+@login_required
+def new_group(request):
+    user = request.user
+    if request.method == 'POST':
+        form = myforms.GroupForm(request.POST, user=user)
+        if form.is_valid():
+            g = form.save()
+            user.get_profile().groups.add(g)
+            return HttpResponseRedirect('/settings/friends/')
+
+    form = myforms.GroupForm(user=user)
+    return render_to_response('settings/group.html', {'form': form},
+            context_instance=RequestContext(request))
+
+@login_required
+def edit_group(request, id):
+    group = Group.objects.get(id=id)
+    user = request.user
+    if request.method == 'POST':
+        form = myforms.GroupForm(request.POST, instance=group, user=user)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/settings/friends/')
+
+    form = myforms.GroupForm(instance=group, user=user)
+    return render_to_response('settings/group.html', {'form': form},
             context_instance=RequestContext(request))
 
 @login_required

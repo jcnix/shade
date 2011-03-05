@@ -10,6 +10,8 @@ class Language(models.Model):
 
 class Group(models.Model):
     name = models.CharField(max_length=150)
+    priority = models.IntegerField(null=True, blank=True)
+    members = models.ManyToManyField(User, null=True, blank=True)
 
     def __unicode__(self):
         return name
@@ -144,6 +146,7 @@ class UserProfile(models.Model):
     employers = models.ManyToManyField(Employer, through=EmployerMembership, null=True, blank=True)
     messages = models.ManyToManyField(Message, null=True, blank=True)
     comments = models.ManyToManyField(Comment, null=True, blank=True)
+    groups = models.ManyToManyField(Group, null=True, blank=True)
     site_language = models.ForeignKey(Language, null=True, blank=True)
     url = models.CharField(max_length=20, unique=True)
 

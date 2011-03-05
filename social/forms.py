@@ -1,7 +1,9 @@
 from django import forms
+from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.contrib.auth.models import User
 from django.core.validators import MinLengthValidator
-from shade.social.models import UserProfile, Message, Comment, Picture, Event
+from shade.social.models import UserProfile, Message, Comment, Picture
+from shade.social.models import Event, Group
 import hashlib
 
 class LoginForm(forms.Form):
@@ -36,6 +38,22 @@ class SettingsForm(forms.ModelForm):
         if ' ' in self.cleaned_data['url']:
             self._errors['url'] = [u'URL cannot contain spaces.']
         return self.cleaned_data
+
+class GroupForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        try:
+            user = kwargs.pop('user')
+            super(GroupForm, self).__init__(*args, **kwargs)
+            params = {'queryset': user.get_profile().friends.all(),
+                    'widget': FilteredSelectMultiple('Friends', False),
+                'required': False}
+            self.fields['members'] = forms.ModelMultipleChoiceField(**params)
+        except KeyError:
+            super(GroupForm, self).__init__(*args, **kwargs)
+            self.fields['members'].queryset = User.objects.none()
+
+    class Meta:
+        model = Group
 
 class ChangePassForm(forms.Form):
     old_pass = forms.CharField(widget=forms.PasswordInput)

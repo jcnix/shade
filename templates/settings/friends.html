@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Friends{% endblock %}
+
+{% block content %}
+<h2>Groups</h2>
+<p><a href="{% url shade.social.views.new_group %}">Create new group</a><br/>
+<br/>
+{% for g in user.get_profile.groups.all %}
+    <a href="{% url shade.social.views.edit_group g.id %}">{{ g.name }}</a></br>
+{% endfor %}
+</p>
+<h2>Friends</h1>
+<p>
+{% for f in user.get_profile.friends.all %}
+    <a href="{% url shade.social.views.manage_friend f.id %}">{{ f.get_full_name }}</a><br/>
+{% empty %}
+    You don't have any friends yet.
+{% endfor %}
+</p>
+{% endblock %}
+
