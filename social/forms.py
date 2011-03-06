@@ -44,11 +44,13 @@ class GroupForm(forms.ModelForm):
         try:
             user = kwargs.pop('user')
             super(GroupForm, self).__init__(*args, **kwargs)
-            params = {'queryset': user.get_profile().friends.all(),
-                    'widget': FilteredSelectMultiple('Friends', False),
-                'required': False}
-            self.fields['members'] = forms.ModelMultipleChoiceField(**params)
+            friends = user.get_profile().friends.all()
+            choices = [(x.pk, x.get_profile()) for x in friends]
+            self.fields['members'].widget = FilteredSelectMultiple('Friends',
+                    False, choices=choices)
         except KeyError:
+            # if user isn't set, prevent any chance of the widget
+            # being populated with all users.
             super(GroupForm, self).__init__(*args, **kwargs)
             self.fields['members'].queryset = User.objects.none()
 
