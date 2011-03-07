@@ -18,8 +18,12 @@
     {% include "base_form.html" %}
     <input type="submit" value="Submit">
 </form>
-{% for c in updates %}
-    {% include "profile/comment.html" %}
+
+{% for group, comments in updates.items %}
+    <h3>{{ group }}</h3>
+    {% for c in comments %}
+        {% include "profile/comment.html" %}
+    {% endfor %}
 {% endfor %}
 </p>
 {% endblock %}

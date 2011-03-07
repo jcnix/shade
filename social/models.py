@@ -14,7 +14,7 @@ class Group(models.Model):
     members = models.ManyToManyField(User, null=True, blank=True)
 
     def __unicode__(self):
-        return name
+        return self.name
 
 class Relationship(models.Model):
     name = models.CharField(max_length=25)

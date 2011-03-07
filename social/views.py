@@ -77,20 +77,41 @@ def dashboard(request):
     week = datetime.timedelta(days=7)
     last_week = now - week
     user = request.user
-    friends = user.get_profile().friends.all()
-    updates = []
-    # Add user's friends' status updates
-    for f in friends:
-        us = f.get_profile().comments.filter(author=f, sent__gte=last_week)
-        for u in us:
-            updates.append(u)
 
+    updates = {}
     # Add user's status updates and comments from friends to user
     my_comments = user.get_profile().comments.filter(sent__gte=last_week)
+    up = []
     for c in my_comments:
-        updates.append(c)
+        up.append(c)
+    updates['Me'] = up
 
-    updates.sort(key=lambda x: x.sent, reverse=True)
+    # Add user's friends' status updates
+    friends = list(user.get_profile().friends.all())
+    groups = user.get_profile().groups.all()
+    for g in groups:
+        updates[g] = None
+        up = []
+        members = g.members.all()
+        for f in members:
+            us = f.get_profile().comments.filter(author=f, sent__gte=last_week)
+            for u in us:
+                up.append(u)
+            f = User.objects.get(username=f)
+            friends.remove(f)
+        up.sort(key=lambda x: x.sent, reverse=True)
+        updates[g] = up
+
+    #reset up in case friends is empty
+    up = []
+    for f in friends:
+        comments = f.get_profile().comments.filter(sent__gte=last_week)
+        up = []
+        for c in my_comments:
+            up.append(c)
+    up.sort(key=lambda x: x.sent, reverse=True)
+    updates['No Group'] = up
+
     form = myforms.CommentForm()
     return render_to_response('dashboard.html', {'updates': updates, 'form': form},
             context_instance=RequestContext(request))
