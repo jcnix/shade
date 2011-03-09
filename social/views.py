@@ -88,6 +88,7 @@ def dashboard(request):
 
     # Add user's friends' status updates
     friends = list(user.get_profile().friends.all())
+    subs = list(user.get_profile().subscriptions.all())
     groups = user.get_profile().groups.all()
     for g in groups:
         updates[g] = None
@@ -109,6 +110,13 @@ def dashboard(request):
         up = []
         for c in my_comments:
             up.append(c)
+    #ungrouped subscriptions
+    for s in subs:
+        #make sure public=True, we don't want to leak private updates.
+        comments = s.get_profile().comments.filter(public=True, sent__gte=last_week)
+        for c in comments:
+            up.append(c)
+
     up.sort(key=lambda x: x.sent, reverse=True)
     updates['No Group'] = up
 
@@ -267,6 +275,16 @@ def delete_comment(request, url, comment_id):
     if comment in prof.comments.all():
         prof.comments.remove(comment)
         comment.delete()
+
+    return HttpResponseRedirect('/dashboard/')
+
+@login_required
+def subscribe(request, url):
+    user = request.user
+    prof = user.get_profile()
+    other_user_prof = UserProfile.objects.get(url=url)
+    other_user = other_user_prof.user
+    prof.subscriptions.add(other_user)
 
     return HttpResponseRedirect('/dashboard/')
 

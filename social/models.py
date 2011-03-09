@@ -137,6 +137,7 @@ class UserProfile(models.Model):
     current_country = models.CharField(max_length=25, null=True, blank=True)
     current_state = models.CharField(max_length=30, null=True, blank=True)
     friends = models.ManyToManyField(User, null=True, blank=True, related_name='friends')
+    subscriptions = models.ManyToManyField(User, null=True, blank=True, related_name='subscriptions')
     invites = models.ManyToManyField(Invite, null=True, blank=True, related_name='invites')
     event_invites = models.ManyToManyField(EventInvite, null=True, blank=True, related_name='event_invites')
     albums = models.ManyToManyField(Album, null=True, blank=True)
