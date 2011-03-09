@@ -107,8 +107,7 @@ def dashboard(request):
     up = []
     for f in friends:
         comments = f.get_profile().comments.filter(sent__gte=last_week)
-        up = []
-        for c in my_comments:
+        for c in comments:
             up.append(c)
     #ungrouped subscriptions
     for s in subs:
