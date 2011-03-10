@@ -6,4 +6,5 @@ deploy.sh
 rsyncignore
 settings.py
 localsettings.py
+shade.data
 
