@@ -45,9 +45,8 @@ def msg_compose(request, msg_id=0):
         subject = 'Re: '+m.subject
         msg = Message(recipient=m.author, subject=subject)
         form = myforms.MessageForm(instance=msg)
-        return HttpResponseRedirect('/inbox/')
     else:
-        form = myforms.MessageForm()
+        return HttpResponseRedirect('/inbox/')
     form.fields['recipient'].choices = ((u.id, u.get_full_name()) for u in user.get_profile().friends.all())
     return render_to_response('messages/compose.html', {'form': form},
             context_instance=RequestContext(request))
