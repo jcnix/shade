@@ -53,7 +53,7 @@
                         {% endfor %}
                         </p>
                         <p>
-                        <b><a href="{% url shade.social.views.inbox %}">Messages</a></b><br/>
+                        <b><a href="{% url shade.social.messaging.inbox %}">Messages</a></b><br/>
                         {% if unread_msg_count %}
                             {{ unread_msg_count }} message{{ unread_msg_count|pluralize }}
                         {% else %}

@@ -7,15 +7,15 @@
 <p>
 <div id="nav">
     <ul>
-        <li><a href="{% url shade.social.views.inbox %}">Inbox</a></li>
-        <li><a href="{% url shade.social.views.msg_compose msg.id %}">Reply</a></li>
-        <li><a href="{% url shade.social.views.msg_delete msg.id %}">Delete</a></li>
+        <li><a href="{% url shade.social.messaging.inbox %}">Inbox</a></li>
+        <li><a href="{% url shade.social.messaging.msg_compose msg.id %}">Reply</a></li>
+        <li><a href="{% url shade.social.messaging.msg_delete msg.id %}">Delete</a></li>
     </ul>
 </div>
 <br/>
 <p><b>{{ msg.subject }}</b><br/>
 From: {{ msg.author.get_full_name }}<br/>
-Sent: {{ msg.sent|mardown }}</p>
+Sent: {{ msg.sent|markdown }}</p>
 <blockquote>{{ msg.body }}</blockquote>
 {% endblock %}
 

@@ -6,7 +6,7 @@
 <p>
 <div id="nav">
     <ul>
-        <li><a href="{% url shade.social.views.msg_compose %}">Compose</a></li>
+        <li><a href="{% url shade.social.messaging.msg_compose %}">Compose</a></li>
     </ul>
 </div>
 <br/>
@@ -23,7 +23,7 @@
         <tr class="{% cycle "red_row1" "red_row2" %}">
     {% endif %}
         <td><a href="{% url shade.social.views.profile m.author.get_profile.url %}">{{ m.author.get_full_name }}</a></td>
-        <td><a href="{% url shade.social.views.msg_view m.id %}">{{ m.subject }}</a></td>
+        <td><a href="{% url shade.social.messaging.msg_view m.id %}">{{ m.subject }}</a></td>
         <td>{{ m.sent }}</td>
     </tr>
 {% empty %}
