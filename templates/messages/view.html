@@ -15,7 +15,7 @@
 <br/>
 <p><b>{{ msg.subject }}</b><br/>
 From: {{ msg.author.get_full_name }}<br/>
-Sent: {{ msg.sent|markdown }}</p>
-<blockquote>{{ msg.body }}</blockquote>
+Sent: {{ msg.sent }}</p>
+<blockquote>{{ msg.body|markdown }}</blockquote>
 {% endblock %}
 
