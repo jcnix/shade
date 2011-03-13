@@ -10,7 +10,7 @@ from shade.social import util
 from shade.social.models import UserProfile, Language, Invite, Message
 from shade.social.models import Comment, SubComment, Album, Picture, Event
 from shade.social.models import EventInvite, Group
-import hashlib, datetime
+import datetime
 
 def index(request):
     if request.user.is_authenticated():
@@ -175,54 +175,6 @@ def profile(request, url):
     return render_to_response('profile/profile.html', {'other_user': other_user, 
         'form': form, 'invited': invited, 'age': age},
         context_instance=RequestContext(request))
-
-@login_required
-def post_comment(request, url):
-    user = request.user
-    prof = get_object_or_404(UserProfile, url=url)
-    other_user = prof.user
-
-    if util.can_users_interract(user, other_user):
-        if request.method == 'POST':
-            comment = Comment.objects.create(
-                    author=user,
-                    read=False,
-                    sent = datetime.datetime.now()
-                    )
-            form = myforms.CommentForm(request.POST, instance=comment)
-            comment = form.save()
-            other_user.get_profile().comments.add(comment)
-    return HttpResponseRedirect('/profile/'+other_user.get_profile().url+'/')
-
-@login_required
-def reply_to_comment(request, url, comment_id):
-    user = request.user
-    prof = get_object_or_404(UserProfile, url=url)
-    other_user = prof.user
-
-    if request.method == 'POST':
-        if util.can_users_interract(user, other_user):
-            comment = get_object_or_404(Comment, id=comment_id)
-            subcomment = SubComment.objects.create(
-                    author=user,
-                    post=request.POST['post'],
-                    read=False,
-                    sent=datetime.datetime.now(),
-                    parent=comment,
-                    )
-            comment.subcomments.add(subcomment)
-
-    return HttpResponseRedirect('/profile/'+other_user.get_profile().url)
-
-@login_required
-def delete_comment(request, url, comment_id):
-    prof = request.user.get_profile()
-    comment = Comment.objects.get(id=comment_id)
-    if comment in prof.comments.all():
-        prof.comments.remove(comment)
-        comment.delete()
-
-    return HttpResponseRedirect('/dashboard/')
 
 @login_required
 def subscribe(request, url):

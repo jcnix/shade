@@ -39,7 +39,7 @@
 {% endif %}
 <h3>Comments</h3>
 {% if form %}
-    <form id="comment" method="post" action="{% url shade.social.views.post_comment other_user.get_profile.url %}">
+    <form id="comment" method="post" action="{% url shade.social.comments.post other_user.get_profile.url %}">
         {% csrf_token %}
         {% include "base_form.html" %}
         <input type="submit" value="Submit">
