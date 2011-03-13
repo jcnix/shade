@@ -15,7 +15,7 @@
     <a href="{% url shade.social.views.subscribe other_user.get_profile.url %}">Subscribe to public updates from {{ other_user.first_name }}</a>
     {% endif %}
 {% else %}
-    <a href="{% url shade.social.views.login %}">Login</a> to add {{other_user.first_name}} to your friends.
+    <a href="{% url shade.social.auth.login %}">Login</a> to add {{other_user.first_name}} to your friends.
 {% endif %}
 {% endif %}
 </p>

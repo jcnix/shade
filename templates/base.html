@@ -28,7 +28,7 @@
                         <li><a href="{% url shade.social.views.profile user.get_profile.url %}">Profile</a></li>
                         <li><a href="{% url shade.social.views.albums user.get_profile.url %}">Pictures</a></li>
                         <li><a href="{% url shade.social.views.search %}">Search</a></li>
-                        <li><a href="{% url shade.social.views.logout %}">Logout</a></li>
+                        <li><a href="{% url shade.social.auth.logout %}">Logout</a></li>
                     </ul>    
                 {% endif %}
             </div>

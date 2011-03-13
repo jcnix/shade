@@ -8,9 +8,9 @@ from django.conf import settings
 urlpatterns = patterns('',
     # Example:
     (r'^$', 'shade.social.views.index'),
-    (r'^login/', 'shade.social.views.login'),
-    (r'^logout/', 'shade.social.views.logout'),
-    (r'^register/', 'shade.social.views.register'),
+    (r'^login/', 'shade.social.auth.login'),
+    (r'^logout/', 'shade.social.auth.logout'),
+    (r'^register/', 'shade.social.auth.register'),
     (r'^dashboard/$', 'shade.social.views.dashboard'),
     (r'^settings/$', 'shade.social.views.settings'),
     (r'^settings/friends/$', 'shade.social.views.manage_friends'),

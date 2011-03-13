@@ -38,3 +38,16 @@ class MessagingTest(TestCase):
         response = self.client.get('/inbox/delete'+self.message.id)
         self.failUnlessEqual(response.status_code, 200)
 
+class AuthTest(TestCase):
+    def login_test(self):
+        response = self.client.get('/login/')
+        self.failUnlessEqual(response.status_code, 200)
+
+    def logout_test(self):
+        response = self.client.get('/logout/')
+        self.failUnlessEqual(response.status_code, 200)
+
+    def register_test(self):
+        response = self.client.get('/register/')
+        self.failUnlessEqual(response.status_code, 200)
+
