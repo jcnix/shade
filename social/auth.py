@@ -7,6 +7,7 @@ from shade.social import forms as myforms
 
 def login(request):
     if not request.user.is_authenticated():
+        form = myforms.LoginForm()
         if request.method == 'POST':
             form = myforms.LoginForm(request.POST)
             if form.is_valid():
@@ -19,10 +20,9 @@ def login(request):
                     return HttpResponseRedirect('/dashboard/')
                 else:
                     return HttpResponse('fail')
-        else:
-            form = myforms.LoginForm()
-            return render_to_response('login.html', {'form': form},
-                context_instance=RequestContext(request))
+
+        return render_to_response('login.html', {'form': form},
+            context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/')
 
