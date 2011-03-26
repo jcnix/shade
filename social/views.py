@@ -10,7 +10,7 @@ from shade.social import util
 from shade.social.models import UserProfile, Language, Invite, Message
 from shade.social.models import Comment, SubComment, Album, Picture, Event
 from shade.social.models import EventInvite, Group
-import datetime
+import datetime, os
 
 def index(request):
     if request.user.is_authenticated():
@@ -276,6 +276,7 @@ def delete_img(request, url, img_id):
                 profile.profile_picture = None
                 profile.save()
 
+            os.remove(img.image.path)
             a.pictures.remove(img)
             img.delete()
             break
