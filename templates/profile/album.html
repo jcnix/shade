@@ -7,14 +7,14 @@
 {% if user == other_user %}
     <div id="nav">
         <ul>
-            <li><a href="{% url shade.social.views.upload_img album.id %}">Upload Image</a></li>
+            <li><a href="{% url shade.social.images.upload_img album.id %}">Upload Image</a></li>
         </ul>
     </div>
 {% endif %}
 
 <p>
 {% for p in album.pictures.all %}
-    <a href="{% url shade.social.views.view_img other_user.get_profile.url p.id %}"><img src="{{ p.image.url }}" height="150" width="200"></a>
+    <a href="{% url shade.social.images.view_img other_user.get_profile.url p.id %}"><img src="{{ p.image.url }}" height="150" width="200"></a>
 {% empty %}
     Album empty.
 {% endfor %}

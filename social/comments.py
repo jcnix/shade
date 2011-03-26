@@ -56,21 +56,3 @@ def delete(request, url, comment_id):
 
     return HttpResponseRedirect('/dashboard/')
 
-@login_required
-def comment_img(request, url, img_id):
-    user = request.user
-    prof = UserProfile.objects.get(url=url)
-    other_user = prof.user
-    img = get_object_or_404(Picture, id=img_id)
-    if util.can_users_interract(user, other_user):
-        if request.method == 'POST':
-            comment = Comment.objects.create(
-                    author=user,
-                    read=False,
-                    sent = datetime.datetime.now()
-                    )
-            form = myforms.CommentForm(request.POST, instance=comment)
-            comment = form.save()
-            img.comments.add(comment)
-    return HttpResponseRedirect('/profile/'+url+'/images/'+str(img_id)+'/view/')
-

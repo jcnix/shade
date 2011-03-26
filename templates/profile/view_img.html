@@ -7,14 +7,14 @@
 {% if user == other_user %}
     <div id="nav">
         <ul>
-            <li><a href="{% url shade.social.views.set_profile_pic user.get_profile.url img.id %}">Set as profile picture</a></li>
-            <li><a href="{% url shade.social.views.delete_img user.get_profile.url img.id %}">Delete</a></li>
+            <li><a href="{% url shade.social.images.set_profile_pic user.get_profile.url img.id %}">Set as profile picture</a></li>
+            <li><a href="{% url shade.social.images.delete_img user.get_profile.url img.id %}">Delete</a></li>
         </ul>
     </div>
 {% endif %}
 <p><img src="{{ img.image.url }}"><p>
 <p>{{ img.caption }}</p>
-<form id="comment" method="post" action="{% url shade.social.comments.comment_img other_user.get_profile.url img.id %}">
+<form id="comment" method="post" action="{% url shade.social.images.comment_img other_user.get_profile.url img.id %}">
     {% csrf_token %}
     {% include "base_form.html" %}
     <input type="submit" value="Submit">

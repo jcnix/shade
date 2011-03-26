@@ -26,7 +26,7 @@
                         <li><a href="{% url shade.social.views.dashboard %}">Dashboard</a></li>
                         <li><a href="{% url shade.social.views.settings %}">Settings</a></li>
                         <li><a href="{% url shade.social.views.profile user.get_profile.url %}">Profile</a></li>
-                        <li><a href="{% url shade.social.views.albums user.get_profile.url %}">Pictures</a></li>
+                        <li><a href="{% url shade.social.images.albums user.get_profile.url %}">Pictures</a></li>
                         <li><a href="{% url shade.social.views.search %}">Search</a></li>
                         <li><a href="{% url shade.social.auth.logout %}">Logout</a></li>
                     </ul>    
