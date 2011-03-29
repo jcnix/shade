@@ -118,8 +118,10 @@ class SearchForm(forms.Form):
 
     def clean(self):
         name = self.cleaned_data['name']
-        name_l = name.split(' ')
-        if len(name_l) != 2:
-            self._errors['name'] = [u'Use first name and last name']
+        #If name field is set, verify it is correct
+        if len(name) > 0:
+            name_l = name.split(' ')
+            if len(name_l) != 2:
+                self._errors['name'] = [u'Use first name and last name']
         return self.cleaned_data
 
