@@ -17,7 +17,7 @@ class RegisterForm(forms.Form):
     last_name = forms.CharField()
 
     def clean(self):
-        email = self.cleaned_data['email']
+        email = self.cleaned_data.get('email')
         try:
             u = User.objects.get(email=email)
         except User.DoesNotExist:
@@ -35,7 +35,7 @@ class SettingsForm(forms.ModelForm):
 
     def clean(self):
         super(forms.ModelForm, self).clean()
-        if ' ' in self.cleaned_data['url']:
+        if ' ' in self.cleaned_data.get('url'):
             self._errors['url'] = [u'URL cannot contain spaces.']
         return self.cleaned_data
 
@@ -64,8 +64,8 @@ class ChangePassForm(forms.Form):
 
     def clean(self):
         super(forms.Form, self).clean()
-        pass1 = self.cleaned_data['new_pass1']
-        pass2 = self.cleaned_data['new_pass2']
+        pass1 = self.cleaned_data.get('new_pass1')
+        pass2 = self.cleaned_data.get('new_pass2')
         if pass1 != pass2:
             self._errors['new_pass1'] = [u'Passwords do not match.']
         return self.cleaned_data
@@ -80,11 +80,11 @@ class MessageForm(forms.ModelForm):
 
     def clean(self):
         super(forms.ModelForm, self).clean()
-        subject = self.cleaned_data['subject']
+        subject = self.cleaned_data.get('subject')
         if subject.isspace():
             self.cleaned_data['subject'] = 'No Subject'
 
-        recipient = self.cleaned_data['recipient']
+        recipient = self.cleaned_data.get('recipient')
         author = self.instance.author
         if recipient not in author.get_profile().friends.all():
             self._errors['url'] = [u'User not in your friends.']
@@ -117,7 +117,7 @@ class SearchForm(forms.Form):
     email = forms.EmailField(required=False)
 
     def clean(self):
-        name = self.cleaned_data['name']
+        name = self.cleaned_data.get('name')
         #If name field is set, verify it is correct
         if len(name) > 0:
             name_l = name.split(' ')
