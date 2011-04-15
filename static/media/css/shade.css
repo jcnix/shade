@@ -73,35 +73,35 @@ td {padding:0.5em;}
 }
 
 #header_wrapper {background: #711;}
-header {
+#header {
     background: #900;
     font-size:  1.4em; 
     font-family:Arial;
     margin:     0 50px;
     height:     100px;
 }
-header a { text-decoration: none; }
-header h1:hover {color: #FF0;}
-header p {
+#header a { text-decoration: none; }
+#header h1:hover {color: #FF0;}
+#header p {
     text-align: right;
     height:     100px;
 }
 
-nav {
+#nav {
     margin:     10px 50px 0;
     background: #777;
 }
-nav li {
+#nav li {
     display:    inline;
     font-size:  1.6em;
     padding:    0 20px;
 }
-nav a {
+#nav a {
     color:      #CCC;
     padding:    0 20px;
     text-decoration: none;
 }
-nav a:hover {
+#nav a:hover {
     color:      #222;
     background: #CCC;
 }
@@ -122,6 +122,9 @@ nav a:hover {
     width:      75%;
     padding-right:3%;
     border-right:2px solid #252525;
+}
+#main img {
+    padding:    15px 5px;
 }
 
 #content h2, #content h3, #content h4, #content h5, #content h6 {

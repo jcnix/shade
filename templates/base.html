@@ -1,5 +1,8 @@
-<!DOCTYPE html> 
-<html> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+{% block html_declare %}
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+{% endblock %}
     <head>
         <title>{% block title %}{% endblock %} | Shade</title>
         <link type="text/css" rel="stylesheet" href="/shade/css/shade.css" />
@@ -13,11 +16,11 @@
         {% endblock %}
         <div id="wrap">
             <div id="header_wrapper">
-                <header>
+                <div id="header">
                     <a href="/"><img src="/shade/images/logo.png"></a>
-                </header>
+                </div>
             </div>
-            <nav>
+            <div id="nav">
                 {% if user.is_authenticated %}
                     <ul>
                         <li><a href="{% url shade.social.views.dashboard %}">Dashboard</a></li>
@@ -28,7 +31,7 @@
                         <li><a href="{% url shade.social.auth.logout %}">Logout</a></li>
                     </ul>    
                 {% endif %}
-            </nav>
+            </div>
             <div id="main">
                 <div id="content">
                     {% block content %}
@@ -74,7 +77,7 @@
                     {% endif %}
                 </div>
             </div>
-            <div id="push">&nbsp;</div>
+            <div id="push">&nbsp</div>
             <div id="footer">
                 <p>Copyright 2011 Casey-Jones.org <a href="http://www.djangoproject.com/"><img src="http://media.djangoproject.com/img/badges/djangoproject120x25.gif" border="0" alt="A Django project." title="A Django project." /></a></p>
             </div>
