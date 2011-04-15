@@ -37,6 +37,7 @@ def dashboard(request):
     friends = list(user.get_profile().friends.all())
     subs = list(user.get_profile().subscriptions.all())
     groups = user.get_profile().groups.all()
+    print groups
     for g in groups:
         updates[g] = None
         up = []
@@ -129,6 +130,18 @@ def edit_group(request, id):
     form = myforms.GroupForm(instance=group, user=user)
     return render_to_response('settings/group.html', {'form': form},
             context_instance=RequestContext(request))
+
+def sort_group(request):
+    if request.method == 'POST':
+        groups = request.POST.getlist('group[]')
+        counter = 1
+        for i in groups:
+            g = Group.objects.get(id=i)
+            g.priority = counter
+            counter += 1
+            g.save()
+
+    return HttpResponse('')
 
 @login_required
 def change_pass(request):

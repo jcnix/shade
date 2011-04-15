@@ -9,6 +9,9 @@ class Language(models.Model):
         return name
 
 class Group(models.Model):
+    class Meta:
+        ordering = ['priority']
+
     name = models.CharField(max_length=150)
     priority = models.IntegerField(null=True, blank=True)
     members = models.ManyToManyField(User, null=True, blank=True)

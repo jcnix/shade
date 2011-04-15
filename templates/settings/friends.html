@@ -2,13 +2,35 @@
 
 {% block title %}Manage Friends{% endblock %}
 
+{% block extra_head %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#sortable").sortable({
+            placeholder: "ui-state-highlight",
+            update: function() {
+                var order = $(this).sortable('serialize');
+                $.ajax({
+                    type: "POST",
+                    data: order,
+                    url: "/settings/friends/group/set_order/"
+                });
+            }
+        });
+        $("#sortable").disableSelection();
+    });
+</script>
+{% endblock %}
+
 {% block content %}
 <h2>Groups</h2>
-<p><a href="{% url shade.social.views.new_group %}">Create new group</a><br/>
-<br/>
-{% for g in user.get_profile.groups.all %}
-    <a href="{% url shade.social.views.edit_group g.id %}">{{ g.name }}</a></br>
-{% endfor %}
+<p>
+    <a href="{% url shade.social.views.new_group %}">Create new group</a><br/>
+    <br/>
+    <ul id="sortable">
+    {% for g in user.get_profile.groups.all %}
+        <li class="ui-state-default" id="group_{{ g.id }}"><a href="{% url shade.social.views.edit_group g.id %}">{{ g.name }}</a></li>
+    {% endfor %}
+    </ul>
 </p>
 <h2>Friends</h1>
 <p>
