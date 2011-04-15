@@ -2,6 +2,14 @@
 
 {% block title %}Settings{% endblock %}
 
+{% block extra_head %}
+<script type="text/javascript">
+    $(function() {
+        $('#id_birthdate').datepicker();
+    });
+</script>
+{% endblock %}
+
 {% block content %}
 <b>Settings</b>
 <form method="post" action="">

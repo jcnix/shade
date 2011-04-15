@@ -2,6 +2,14 @@
 
 {% block title %}New Event{% endblock %}
 
+{% block extra_head %}
+<script type="text/javascript">
+    $(function() {
+        $('#id_datetime').datepicker();
+    });
+</script>
+{% endblock %}
+
 {% block content %}
 <form method="post" action="">
     {% csrf_token %}
