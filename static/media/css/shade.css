@@ -26,7 +26,7 @@ input {
 
 p {
     line-height:1.4em;
-    padding:    0.2em 0 1.2em;
+    padding:    0.7em 0 0.7em;
 }
 
 a:link {
@@ -53,7 +53,9 @@ h1,h2,h3,h4,h5,h6 {
     font-weight:normal;
 }
 
-code {
+.code {
+    margin: 3px 5px;
+    padding: 8px;
     background: #181818;
 }
 
@@ -73,35 +75,35 @@ td {padding:0.5em;}
 }
 
 #header_wrapper {background: #711;}
-#header {
+header {
     background: #900;
     font-size:  1.4em; 
     font-family:Arial;
     margin:     0 50px;
     height:     100px;
 }
-#header a { text-decoration: none; }
-#header h1:hover {color: #FF0;}
-#header p {
+header a { text-decoration: none; }
+header h1:hover {color: #FF0;}
+header p {
     text-align: right;
     height:     100px;
 }
 
-#nav {
+nav {
     margin:     10px 50px 0;
     background: #777;
 }
-#nav li {
+nav li {
     display:    inline;
     font-size:  1.6em;
     padding:    0 20px;
 }
-#nav a {
+nav a {
     color:      #CCC;
     padding:    0 20px;
     text-decoration: none;
 }
-#nav a:hover {
+nav a:hover {
     color:      #222;
     background: #CCC;
 }
