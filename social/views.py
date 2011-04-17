@@ -10,6 +10,7 @@ from shade.social import util
 from shade.social.models import UserProfile, Language, Invite, Message
 from shade.social.models import Comment, SubComment, Album, Picture, Event
 from shade.social.models import EventInvite, Group
+from shade.social.groups import GroupUpdates
 import datetime
 
 def index(request):
@@ -25,21 +26,22 @@ def dashboard(request):
     last_week = now - week
     user = request.user
 
-    updates = {}
+    updates = []
     # Add user's status updates and comments from friends to user
     my_comments = user.get_profile().comments.filter(sent__gte=last_week)
     up = []
     for c in my_comments:
         up.append(c)
-    updates['Me'] = up
+    me = GroupUpdates()
+    me.name = 'Me'
+    me.updates = up
+    updates.append(me)
 
     # Add user's friends' status updates
     friends = list(user.get_profile().friends.all())
     subs = list(user.get_profile().subscriptions.all())
     groups = user.get_profile().groups.all()
-    print groups
     for g in groups:
-        updates[g] = None
         up = []
         members = g.members.all()
         for f in members:
@@ -47,9 +49,13 @@ def dashboard(request):
             for u in us:
                 up.append(u)
             f = User.objects.get(username=f)
+            # Remove f from list, so they don't end up in uncategorized
             friends.remove(f)
         up.sort(key=lambda x: x.sent, reverse=True)
-        updates[g] = up
+        gu = GroupUpdates()
+        gu.name = g
+        gu.updates = up
+        updates.append(gu)
 
     #reset up in case friends is empty
     up = []
@@ -65,7 +71,10 @@ def dashboard(request):
             up.append(c)
 
     up.sort(key=lambda x: x.sent, reverse=True)
-    updates['No Group'] = up
+    ng = GroupUpdates()
+    ng.name = 'No Group'
+    ng.updates = up
+    updates.append(ng)
 
     form = myforms.CommentForm()
     return render_to_response('dashboard.html', {'updates': updates, 'form': form},

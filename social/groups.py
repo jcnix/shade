@@ -1,0 +1,4 @@
+class GroupUpdates:
+    name = ""
+    updates = []
+

@@ -19,9 +19,9 @@
     <input type="submit" value="Submit">
 </form>
 
-{% for group, comments in updates.items %}
-    <h3>{{ group }}</h3>
-    {% for c in comments %}
+{% for group in updates %}
+    <h3>{{ group.name }}</h3>
+    {% for c in group.updates %}
         {% include "profile/comment.html" %}
     {% endfor %}
 {% endfor %}
