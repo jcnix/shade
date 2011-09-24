@@ -88,7 +88,8 @@ def delete_img(request, url, img_id):
                 profile.profile_picture = None
                 profile.save()
 
-            os.remove(img.image.path)
+            if os.path.isfile(img.image.path):
+                os.remove(img.image.path)
             a.pictures.remove(img)
             img.delete()
             break
