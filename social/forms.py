@@ -2,8 +2,8 @@ from django import forms
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.contrib.auth.models import User
 from django.core.validators import MinLengthValidator
-from shade.social.models import UserProfile, Message, Comment, Picture
-from shade.social.models import Event, Group
+from .models import UserProfile, Message, Comment, Picture
+from .models import Event, Group
 import hashlib
 
 class LoginForm(forms.Form):
@@ -56,6 +56,7 @@ class GroupForm(forms.ModelForm):
 
     class Meta:
         model = Group
+        fields = ['members']
 
 class ChangePassForm(forms.Form):
     old_pass = forms.CharField(widget=forms.PasswordInput)

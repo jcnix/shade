@@ -14,7 +14,7 @@ class Group(models.Model):
 
     name = models.CharField(max_length=150)
     priority = models.IntegerField(null=True, blank=True)
-    members = models.ManyToManyField(User, null=True, blank=True)
+    members = models.ManyToManyField(User, blank=True)
 
     def __unicode__(self):
         return self.name
@@ -62,8 +62,8 @@ class Message(models.Model):
         get_latest_by = 'sent'
         ordering = ['-sent']
 
-    author = models.ForeignKey(User, related_name='from')
-    recipient = models.ForeignKey(User, related_name='to')
+    author = models.ForeignKey(User, related_name='mfrom')
+    recipient = models.ForeignKey(User, related_name='mto')
     subject = models.CharField(max_length=50)
     body = models.TextField()
     read = models.BooleanField()
@@ -82,21 +82,21 @@ class Comment(models.Model):
     read = models.BooleanField()
     sent = models.DateTimeField()
     public = models.BooleanField(default=False)
-    subcomments = models.ManyToManyField('SubComment', null=True, blank=True)
+    subcomments = models.ManyToManyField('SubComment', blank=True)
 
 class SubComment(Comment):
     parent = models.ForeignKey(Comment, related_name='parent')
 
 class Picture(models.Model):
     image = models.ImageField(upload_to='uploads/')
-    caption = models.CharField(max_length=140, null=True, blank=True)
-    tagged = models.ManyToManyField(User, null=True, blank=True)
+    caption = models.CharField(max_length=140, blank=True)
+    tagged = models.ManyToManyField(User, blank=True)
     uploaded = models.DateField()
-    comments = models.ManyToManyField(Comment, null=True, blank=True)
+    comments = models.ManyToManyField(Comment, blank=True)
 
 class Album(models.Model):
     name = models.CharField(max_length=40)
-    pictures = models.ManyToManyField('Picture', null=True, blank=True)
+    pictures = models.ManyToManyField('Picture', blank=True)
 
 #Friend invite
 class Invite(models.Model):
@@ -127,7 +127,7 @@ class Event(models.Model):
         return self.title
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User, unique=True)
+    user = models.ForeignKey(User)
     profile_picture = models.ForeignKey(Picture, null=True, blank=True)
     birthdate = models.DateField(null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
@@ -139,25 +139,25 @@ class UserProfile(models.Model):
     current_town = models.CharField(max_length=40, null=True, blank=True)
     current_country = models.CharField(max_length=25, null=True, blank=True)
     current_state = models.CharField(max_length=30, null=True, blank=True)
-    friends = models.ManyToManyField(User, null=True, blank=True, related_name='friends')
-    subscriptions = models.ManyToManyField(User, null=True, blank=True, related_name='subscriptions')
-    invites = models.ManyToManyField(Invite, null=True, blank=True, related_name='invites')
-    event_invites = models.ManyToManyField(EventInvite, null=True, blank=True, related_name='event_invites')
-    albums = models.ManyToManyField(Album, null=True, blank=True)
-    events = models.ManyToManyField(Event, null=True, blank=True)
+    friends = models.ManyToManyField(User, blank=True, related_name='friends')
+    subscriptions = models.ManyToManyField(User, blank=True, related_name='subscriptions')
+    invites = models.ManyToManyField(Invite, blank=True, related_name='invites')
+    event_invites = models.ManyToManyField(EventInvite, blank=True, related_name='event_invites')
+    albums = models.ManyToManyField(Album, blank=True)
+    events = models.ManyToManyField(Event, blank=True)
     relationship_status = models.ForeignKey(Relationship, null=True, blank=True)
-    schools = models.ManyToManyField(School, through=SchoolMembership, null=True, blank=True)
-    employers = models.ManyToManyField(Employer, through=EmployerMembership, null=True, blank=True)
-    messages = models.ManyToManyField(Message, null=True, blank=True)
-    comments = models.ManyToManyField(Comment, null=True, blank=True)
-    groups = models.ManyToManyField(Group, null=True, blank=True)
+    schools = models.ManyToManyField(School, through=SchoolMembership, blank=True)
+    employers = models.ManyToManyField(Employer, through=EmployerMembership, blank=True)
+    messages = models.ManyToManyField(Message, blank=True)
+    comments = models.ManyToManyField(Comment, blank=True)
+    groups = models.ManyToManyField(Group, blank=True)
     site_language = models.ForeignKey(Language, null=True, blank=True)
     url = models.CharField(max_length=20, unique=True)
 
     def __unicode__(self):
         return "%s %s" % (self.user.first_name, self.user.last_name)
 
-from shade.social import util
+import util
 def create_profile(sender, **kwargs):
     if kwargs.get('created', False):
         user = kwargs.get('instance')

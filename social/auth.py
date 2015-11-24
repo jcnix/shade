@@ -1,9 +1,9 @@
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render, render_to_response
 from django.template import RequestContext
-from shade.social import forms as myforms
+import forms as myforms
 
 def login(request):
     if not request.user.is_authenticated():
@@ -21,8 +21,7 @@ def login(request):
                 else:
                     return HttpResponse('fail')
 
-        return render_to_response('login.html', {'form': form},
-            context_instance=RequestContext(request))
+        return render(request, 'registration/login.html', {'form': form})
     else:
         return HttpResponseRedirect('/')
 

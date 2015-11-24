@@ -5,12 +5,12 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from shade.social import forms as myforms
-from shade.social import util
-from shade.social.models import UserProfile, Language, Invite, Message
-from shade.social.models import Comment, SubComment, Album, Picture, Event
-from shade.social.models import EventInvite, Group
-from shade.social.groups import GroupUpdates
+import forms as myforms
+import util
+from .models import UserProfile, Language, Invite, Message
+from .models import Comment, SubComment, Album, Picture, Event
+from .models import EventInvite, Group
+from .groups import GroupUpdates
 import datetime
 
 def index(request):

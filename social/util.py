@@ -1,4 +1,4 @@
-from shade.social.models import UserProfile
+from .models import UserProfile
 import random, string, datetime
 
 def gen_url():

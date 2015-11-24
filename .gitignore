@@ -7,4 +7,4 @@ rsyncignore
 settings.py
 localsettings.py
 shade.data
-
+db.sqlite3
