@@ -1,0 +1,45 @@
+<div class="col-md-4">
+    <div class="row">
+        {% if user.is_authenticated %}
+            <div class="panel panel-default">
+                <div class="panel-heading">Invites</div>
+                <div class="panel-body">
+                    {% for inv in user.userprofile.invites.all %}
+                    Invite from {{ inv.sender.userprofile }} on {{ inv.sent }}<br/>
+                    <a href="{% url 'accept_inv' inv.sender.userprofile.url %}">Accept</a> /
+                    <a href="{% url 'ignore_inv' inv.sender.userprofile.url %}">Ignore</a>
+                    {% empty %}
+                        No invites.
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading"><a href="{% url 'inbox' %}">Messages</a></div>
+                <div class="panel-body">
+                    {% if unread_msg_count %}
+                        {{ unread_msg_count }} message{{ unread_msg_count|pluralize }}
+                    {% else %}
+                        No new messages.
+                    {% endif %}
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading"><a href="{% url 'events' %}">Events</a></div>
+                <div class="panel-body">
+                    {% for i in user.userprofile.event_invites.all %}
+                        Invited to: {{ i.event.title }} by {{ i.event.author.get_full_name }} on {{ i.sent }}.<br/>
+                        <a href="{% url 'event_accept' i.event.id %}">Attending</a><br/>
+                        <a href="{% url 'event_maybe' i.event.id %}">Possibly Attending</a><br/>
+                        <a href="{% url 'event_decline' i.event.id %}">Not Attending</a><br/>
+                        <br/>
+                    {% endfor %}
+                    {% for e in upcoming_events %}
+                        <a href="{% url 'event_view' e.id %}">{{ e.title }}</a>
+                    {% empty %}
+                        No events.
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
