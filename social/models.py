@@ -1,4 +1,5 @@
 from django.db import models
+from django_markdown.models import MarkdownField
 from django.contrib.auth.models import User
 
 class Language(models.Model):
@@ -130,7 +131,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
     profile_picture = models.ForeignKey(Picture, null=True, blank=True)
     birthdate = models.DateField(null=True, blank=True)
-    bio = models.TextField(null=True, blank=True)
+    bio = MarkdownField(null=True, blank=True)
     gender = models.CharField(max_length=6, null=True, blank=True, choices=(("Male", "Male"), ("Female", "Female")))
     spoken_languages = models.CharField(max_length=150, null=True, blank=True)
     hometown = models.CharField(max_length=40, null=True, blank=True)

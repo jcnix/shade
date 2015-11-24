@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load markup %}
 
 {% block title %}{{ other_user.first_name }} {{ other_user.last_name }}{% endblock %}
 
@@ -15,7 +14,7 @@
     <a href="{% url shade.social.views.subscribe other_user.userprofile.url %}">Subscribe to public updates from {{ other_user.first_name }}</a>
     {% endif %}
 {% else %}
-    <a href="{% url shade.social.auth.login %}">Login</a> to add {{other_user.first_name}} to your friends.
+    <a href="{% url 'login' %}">Login</a> to add {{other_user.first_name}} to your friends.
 {% endif %}
 {% endif %}
 </p>
@@ -25,8 +24,8 @@
     <p><img src="{{ other_user.userprofile.profile_picture.image.url }}" height="150" width="200"></p>
 {% endif %}
 
-<p><a href="{% url shade.social.images.albums other_user.userprofile.url %}">{{ other_user.first_name }}'s Pictures</a></p>
-<p><a href="{% url shade.social.views.view_friends other_user.userprofile.url %}">{{ other_user.first_name }}'s Friends</a></p>
+<p><a href="{% url 'albums' other_user.userprofile.url %}">{{ other_user.first_name }}'s Pictures</a></p>
+<p><a href="{% url 'view_friends' other_user.userprofile.url %}">{{ other_user.first_name }}'s Friends</a></p>
 <h3>Information</h3>
 <p>
     <b>Gender:</b> {{ other_user.userprofile.gender }}<br/>
@@ -35,11 +34,11 @@
     <b>Current Location:</b> {{ other_user.userprofile.current_town }}, {{ other_user.userprofile.current_state }} {{ other_user.userprofile.current_country }}<br />
 </p>
 <h3>Bio</h3>
-<p>{{ other_user.userprofile.bio|markdown }}</p>
+<p>{{ other_user.userprofile.bio }}</p>
 {% endif %}
 <h3>Comments</h3>
 {% if form %}
-    <form id="comment" method="post" action="{% url shade.social.comments.post other_user.userprofile.url %}">
+    <form id="comment" method="post" action="{% url 'post_comment' other_user.userprofile.url %}">
         {% csrf_token %}
         {% include "base_form.html" %}
         <input type="submit" value="Submit">

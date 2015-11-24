@@ -20,4 +20,5 @@ urlpatterns = [
 	url(r'^', include('social.urls')),
 	url(r'^admin/', include(admin.site.urls)),
 	url(r'^', include('django.contrib.auth.urls')),
+	url(r'^markdown/', include( 'django_markdown.urls')),
 ]
