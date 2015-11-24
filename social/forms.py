@@ -97,8 +97,13 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ('post', 'public')
         widgets = {
-            'post': forms.Textarea(attrs={'cols': 80, 'rows': 7}),
+            'post': forms.Textarea(attrs={'rows': 7}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
 
 class AlbumForm(forms.Form):
     name = forms.CharField()

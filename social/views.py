@@ -3,7 +3,7 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render, render_to_response, get_object_or_404
 from django.template import RequestContext
 import forms as myforms
 import util
@@ -77,8 +77,8 @@ def dashboard(request):
     updates.append(ng)
 
     form = myforms.CommentForm()
-    return render_to_response('dashboard.html', {'updates': updates, 'form': form},
-            context_instance=RequestContext(request))
+    context = {'updates': updates, 'form': form, 'nbar': 'dashboard'}
+    return render(request, 'dashboard.html', context)
 
 @login_required
 def settings(request):

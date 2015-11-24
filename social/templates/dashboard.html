@@ -3,28 +3,30 @@
 {% block title %}My Dashboard{% endblock %}
 
 {% block content %}
-<p>Welcome {{ user.first_name }}</p>
-<p>Profile URL: http://shade.casey-jones.org{% url 'profile' user.userprofile.url %}</p>
-<h3>Friends</h3>
-<p>
-<a href="{% url 'manage_friends' %}">Manage Friends</a><br/>
-{% for f in user.userprofile.friends.all %}
-    <a href="{% url shade.social.views.profile f.userprofile.url %}">{{ f.userprofile }}</a>
-    <br/>
-{% endfor %}
-<h3>Updates</h3>
-<form method="post" action="{% url 'post_comment' user.userprofile.url %}">
-    {% csrf_token %}
-    {% include "base_form.html" %}
-    <input type="submit" value="Submit">
-</form>
+<div class="row col-md-8">
+	<p>Welcome {{ user.first_name }}</p>
+	<p>Profile URL: http://shade.casey-jones.org{% url 'profile' user.userprofile.url %}</p>
+	<h3>Friends</h3>
+	<p>
+	<a href="{% url 'manage_friends' %}">Manage Friends</a><br/>
+	{% for f in user.userprofile.friends.all %}
+		<a href="{% url shade.social.views.profile f.userprofile.url %}">{{ f.userprofile }}</a>
+		<br/>
+	{% endfor %}
+	<h3>Updates</h3>
+	<form method="post" action="{% url 'post_comment' user.userprofile.url %}">
+		{% csrf_token %}
+		{% include "base_form.html" %}
+		<button type="submit" class="btn btn-default">Submit</button>
+	</form>
 
-{% for group in updates %}
-    <h3>{{ group.name }}</h3>
-    {% for c in group.updates %}
-        {% include "profile/comment.html" %}
-    {% endfor %}
-{% endfor %}
-</p>
+	{% for group in updates %}
+		<h3>{{ group.name }}</h3>
+		{% for c in group.updates %}
+			{% include "profile/comment.html" %}
+		{% endfor %}
+	{% endfor %}
+	</p>
+</div>
 {% endblock %}
 
