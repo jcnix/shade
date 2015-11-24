@@ -13,6 +13,7 @@ urlpatterns = [
 	url(r'^profile/(?P<url>\w+)/albums/$', images.albums, name='albums'),
 	url(r'^profile/(?P<url>\w+)/comment/$', comments.post, name='post_comment'),
 	url(r'^settings/friends/$', views.manage_friends, name='manage_friends'),
+	url(r'^settings/password/$', views.change_pass, name='change_pass'),
 	url(r'^inbox/$', messaging.inbox, name='inbox'),
 	url(r'^events/$', views.events, name='events'),
 	url(r'^search/$', views.search, name='search'),

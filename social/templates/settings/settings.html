@@ -15,8 +15,8 @@
 <form method="post" action="">
     {% csrf_token %}
     {% include "base_form.html" %}
-    <p><input type="submit" value="Submit" /></p>
+    <button type="submit" class="btn btn-default">Submit</button>
 </form>
-<p><a href="{% url shade.social.views.change_pass %}">Change Password</a></p>
+<p><a href="{% url 'change_pass' %}">Change Password</a></p>
 {% endblock %}
 

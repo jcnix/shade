@@ -33,6 +33,11 @@ class SettingsForm(forms.ModelForm):
                 'current_town', 'current_state', 'current_country',
                 'bio',)
 
+    def __init__(self, *args, **kwargs):
+        super(SettingsForm, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+
     def clean(self):
         super(forms.ModelForm, self).clean()
         if ' ' in self.cleaned_data.get('url'):
