@@ -49,55 +49,55 @@
             </div>
         </nav>
         <div class="container">
-            <div class="row col-md-8">
-                {% block content %}
-                {% endblock %}
-                {% block main_content %}
-                {% endblock %}
-            </div>
-            <hr/>
-            <div class="row col-md-4">
-                {% if user.is_authenticated %}
-                    <p>
-                    <b>Invites</b><br/>
-                    {% for inv in user.userprofile.invites.all %}
-                    Invite from {{ inv.sender.userprofile }} on {{ inv.sent }}<br/>
-                        <a href="{% url 'accept_inv' inv.sender.userprofile.url %}">Accept</a> /
-                        <a href="{% url 'ignore_inv' inv.sender.userprofile.url %}">Ignore</a>
-                    {% empty %}
-                        No invites.
-                    {% endfor %}
-                    </p>
-                    <p>
-                        <b><a href="{% url 'inbox' %}">Messages</a></b><br/>
-                        {% if unread_msg_count %}
-                            {{ unread_msg_count }} message{{ unread_msg_count|pluralize }}
-                        {% else %}
-                            No new messages.
-                        {% endif %}
-                        </p>
-                    <p>
-                        <b><a href="{% url 'events' %}">Events</a></b><br/>
-                        {% for i in user.userprofile.event_invites.all %}
-                            Invited to: {{ i.event.title }} by {{ i.event.author.get_full_name }} on {{ i.sent }}.<br/>
-                            <a href="{% url 'event_accept' i.event.id %}">Attending</a><br/>
-                            <a href="{% url 'event_maybe' i.event.id %}">Possibly Attending</a><br/>
-                            <a href="{% url 'event_decline' i.event.id %}">Not Attending</a><br/>
-                            <br/>
-                        {% endfor %}
-                        {% for e in upcoming_events %}
-                            <a href="{% url 'event_view' e.id %}">{{ e.title }}</a>
+            <div class="row">
+                <div class="col-md-8">
+                    {% block content %}
+                    {% endblock %}
+                    {% block main_content %}
+                    {% endblock %}
+                </div>
+                <div class="col-md-4">
+                    {% if user.is_authenticated %}
+                        <p>
+                        <b>Invites</b><br/>
+                        {% for inv in user.userprofile.invites.all %}
+                        Invite from {{ inv.sender.userprofile }} on {{ inv.sent }}<br/>
+                            <a href="{% url 'accept_inv' inv.sender.userprofile.url %}">Accept</a> /
+                            <a href="{% url 'ignore_inv' inv.sender.userprofile.url %}">Ignore</a>
                         {% empty %}
-                            No events.
+                            No invites.
                         {% endfor %}
-                    </p>
-                {% endif %}
+                        </p>
+                        <p>
+                            <b><a href="{% url 'inbox' %}">Messages</a></b><br/>
+                            {% if unread_msg_count %}
+                                {{ unread_msg_count }} message{{ unread_msg_count|pluralize }}
+                            {% else %}
+                                No new messages.
+                            {% endif %}
+                            </p>
+                        <p>
+                            <b><a href="{% url 'events' %}">Events</a></b><br/>
+                            {% for i in user.userprofile.event_invites.all %}
+                                Invited to: {{ i.event.title }} by {{ i.event.author.get_full_name }} on {{ i.sent }}.<br/>
+                                <a href="{% url 'event_accept' i.event.id %}">Attending</a><br/>
+                                <a href="{% url 'event_maybe' i.event.id %}">Possibly Attending</a><br/>
+                                <a href="{% url 'event_decline' i.event.id %}">Not Attending</a><br/>
+                                <br/>
+                            {% endfor %}
+                            {% for e in upcoming_events %}
+                                <a href="{% url 'event_view' e.id %}">{{ e.title }}</a>
+                            {% empty %}
+                                No events.
+                            {% endfor %}
+                        </p>
+                    {% endif %}
+                </div>
             </div>
-            <div id="push">&nbsp;</div>
+            <div class="row">
+                <p>Copyright 2015 Casey Jones <a href="http://www.djangoproject.com/"><img src="https://www.djangoproject.com/m/img/badges/djangoproject120x25_grey.gif" border="0" alt="A Django project." title="A Django project." /></a></p>
+            </div>
         </div>
-        <footer>
-            <p>Copyright 2015 Casey Jones <a href="http://www.djangoproject.com/"><img src="https://www.djangoproject.com/m/img/badges/djangoproject120x25_grey.gif" border="0" alt="A Django project." title="A Django project." /></a></p>
-        </footer>
     </body>
 </html>
 
