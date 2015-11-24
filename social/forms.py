@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.contrib.auth.models import User
 from django.core.validators import MinLengthValidator
+from django_markdown.fields import MarkdownFormField
+from django_markdown.widgets import MarkdownWidget
 from .models import UserProfile, Message, Comment, Picture
 from .models import Event, Group
 import hashlib
@@ -32,6 +34,9 @@ class SettingsForm(forms.ModelForm):
         fields = ('url', 'gender', 'birthdate', 'hometown', 'home_state', 'home_country',
                 'current_town', 'current_state', 'current_country',
                 'bio',)
+        widgets = {
+            'bio': MarkdownWidget()
+        }
 
     def __init__(self, *args, **kwargs):
         super(SettingsForm, self).__init__(*args, **kwargs)

@@ -1,22 +1,22 @@
 {% extends "base.html" %}
+{% load django_markdown %}
 
 {% block title %}Settings{% endblock %}
 
-{% block extra_head %}
-<script type="text/javascript">
-    $(function() {
-        $('#id_birthdate').datepicker();
-    });
-</script>
-{% endblock %}
-
 {% block content %}
-<b>Settings</b>
-<form method="post" action="">
-    {% csrf_token %}
-    {% include "base_form.html" %}
-    <button type="submit" class="btn btn-default">Submit</button>
-</form>
-<p><a href="{% url 'change_pass' %}">Change Password</a></p>
+	<b>Settings</b>
+	<form method="post" action="">
+		{% csrf_token %}
+		{% include "base_form.html" %}
+		<button type="submit" class="btn btn-default">Submit</button>
+		{% markdown_editor "#id_bio" %}
+    {% markdown_media %}
+	</form>
+	<p><a href="{% url 'change_pass' %}">Change Password</a></p>
+	<script type="text/javascript">
+		$(function() {
+			$('#id_birthdate').datepicker();
+		});
+	</script>
 {% endblock %}
 
