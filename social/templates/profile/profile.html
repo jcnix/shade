@@ -11,8 +11,8 @@
     {% else %}
         {% if user.is_authenticated %}
             {%if user != other_user and user not in other_user.userprofile.friends.all %}
-                <a href="{% url shade.social.views.invite other_user.userprofile.url %}">Add {{ other_user.first_name }} to your friends</a><br/>
-                <a href="{% url shade.social.views.subscribe other_user.userprofile.url %}">Subscribe to public updates from {{ other_user.first_name }}</a>
+                <a href="{% url 'invite' other_user.userprofile.url %}">Add {{ other_user.first_name }} to your friends</a><br/>
+                <a href="{% url 'subscribe' other_user.userprofile.url %}">Subscribe to public updates from {{ other_user.first_name }}</a>
             {% endif %}
         {% else %}
             <a href="{% url 'login' %}">Login</a> to add {{other_user.first_name}} to your friends.
