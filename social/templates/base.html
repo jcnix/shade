@@ -61,8 +61,8 @@
                     <b>Invites</b><br/>
                     {% for inv in user.userprofile.invites.all %}
                     Invite from {{ inv.sender.userprofile }} on {{ inv.sent }}<br/>
-                        <a href="{% url shade.social.views.accept_inv inv.sender.userprofile.url %}">Accept</a> /
-                        <a href="{% url shade.social.views.ignore_inv inv.sender.userprofile.url %}">Ignore</a>
+                        <a href="{% url 'accept_inv' inv.sender.userprofile.url %}">Accept</a> /
+                        <a href="{% url 'ignore_inv' inv.sender.userprofile.url %}">Ignore</a>
                     {% empty %}
                         No invites.
                     {% endfor %}
@@ -79,13 +79,13 @@
                         <b><a href="{% url 'events' %}">Events</a></b><br/>
                         {% for i in user.userprofile.event_invites.all %}
                             Invited to: {{ i.event.title }} by {{ i.event.author.get_full_name }} on {{ i.sent }}.<br/>
-                            <a href="{% url shade.social.views.event_accept i.event.id %}">Attending</a><br/>
-                            <a href="{% url shade.social.views.event_maybe i.event.id %}">Possibly Attending</a><br/>
-                            <a href="{% url shade.social.views.event_decline i.event.id %}">Not Attending</a><br/>
+                            <a href="{% url 'event_accept' i.event.id %}">Attending</a><br/>
+                            <a href="{% url 'event_maybe' i.event.id %}">Possibly Attending</a><br/>
+                            <a href="{% url 'event_decline' i.event.id %}">Not Attending</a><br/>
                             <br/>
                         {% endfor %}
                         {% for e in upcoming_events %}
-                            <a href="{% url shade.social.views.event_view e.id %}">{{ e.title }}</a>
+                            <a href="{% url 'event_view' e.id %}">{{ e.title }}</a>
                         {% empty %}
                             No events.
                         {% endfor %}

@@ -10,7 +10,7 @@
 	<p>
 	<a href="{% url 'manage_friends' %}">Manage Friends</a><br/>
 	{% for f in user.userprofile.friends.all %}
-		<a href="{% url shade.social.views.profile f.userprofile.url %}">{{ f.userprofile }}</a>
+		<a href="{% url 'profile' f.userprofile.url %}">{{ f.userprofile }}</a>
 		<br/>
 	{% endfor %}
 	<h3>Updates</h3>
