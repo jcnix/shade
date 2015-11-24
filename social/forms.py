@@ -60,6 +60,10 @@ class SettingsForm(forms.ModelForm):
         return self.cleaned_data
 
 class GroupForm(forms.ModelForm):
+    class Meta:
+        model = Group
+        fields = ['name', 'members', 'priority']
+
     def __init__(self, *args, **kwargs):
         try:
             user = kwargs.pop('user')
@@ -74,9 +78,8 @@ class GroupForm(forms.ModelForm):
             super(GroupForm, self).__init__(*args, **kwargs)
             self.fields['members'].queryset = User.objects.none()
 
-    class Meta:
-        model = Group
-        fields = ['members']
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
 
 class ChangePassForm(forms.Form):
     old_pass = forms.CharField(widget=forms.PasswordInput)

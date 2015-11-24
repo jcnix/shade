@@ -1,4 +1,4 @@
-{% load markup %}
+{% load django_markdown %}
 <div class="comment" id="{{ c.id }}">
     {{ c.post|markdown }}<br/>
     {{ c.author.get_full_name }} on {{ c.sent }}
@@ -11,6 +11,6 @@
     <br/>
     <a href="javascript:showSubcommentForm('{{ c.id }}', '{{ other_user.userprofile.url }}')">Reply</a>
     {% if c in user.userprofile.comments.all or user == c.author %}
-        <a href="{% url shade.social.comments.delete user.userprofile.url c.id %}">Delete</a>
+        <a href="{% url 'comment_delete' user.userprofile.url c.id %}">Delete</a>
     {% endif %}
 </div>
