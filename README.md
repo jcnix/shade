@@ -1,5 +1,5 @@
 # shade
 My Django social network
 
-**Requirements:**
-django-markdown
+**Requirements:**  
+[django_markdown](https://github.com/klen/django_markdown)
