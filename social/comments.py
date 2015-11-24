@@ -23,8 +23,8 @@ def post(request, url):
                     )
             form = myforms.CommentForm(request.POST, instance=comment)
             comment = form.save()
-            other_user.get_profile().comments.add(comment)
-    return HttpResponseRedirect('/profile/'+other_user.get_profile().url+'/')
+            other_user.userprofile.comments.add(comment)
+    return HttpResponseRedirect('/profile/'+other_user.userprofile.url+'/')
 
 @login_required
 def reply(request, url, comment_id):
@@ -44,11 +44,11 @@ def reply(request, url, comment_id):
                     )
             comment.subcomments.add(subcomment)
 
-    return HttpResponseRedirect('/profile/'+other_user.get_profile().url)
+    return HttpResponseRedirect('/profile/'+other_user.userprofile.url)
 
 @login_required
 def delete(request, url, comment_id):
-    prof = request.user.get_profile()
+    prof = request.user.userprofile
     comment = Comment.objects.get(id=comment_id)
     if comment in prof.comments.all():
         prof.comments.remove(comment)

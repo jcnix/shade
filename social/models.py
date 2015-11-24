@@ -127,7 +127,7 @@ class Event(models.Model):
         return self.title
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User)
+    user = models.OneToOneField(User)
     profile_picture = models.ForeignKey(Picture, null=True, blank=True)
     birthdate = models.DateField(null=True, blank=True)
     bio = models.TextField(null=True, blank=True)

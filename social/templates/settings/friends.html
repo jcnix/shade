@@ -27,14 +27,14 @@
     <a href="{% url shade.social.views.new_group %}">Create new group</a><br/>
     <br/>
     <ul id="sortable">
-    {% for g in user.get_profile.groups.all %}
+    {% for g in user.userprofile.groups.all %}
         <li class="ui-state-default" id="group_{{ g.id }}"><a href="{% url shade.social.views.edit_group g.id %}">{{ g.name }}</a></li>
     {% endfor %}
     </ul>
 </p>
 <h2>Friends</h1>
 <p>
-{% for f in user.get_profile.friends.all %}
+{% for f in user.userprofile.friends.all %}
     <a href="{% url shade.social.views.manage_friend f.id %}">{{ f.get_full_name }}</a><br/>
 {% empty %}
     You don't have any friends yet.

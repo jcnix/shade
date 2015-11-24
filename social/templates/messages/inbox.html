@@ -16,13 +16,13 @@
         <td>Author</td>
         <td>Subject</td>
         <td>Sent</td>
-{% for m in user.get_profile.messages.all %}
+{% for m in user.userprofile.messages.all %}
     {% if m.read %}
         <tr class="{% cycle "row1" "row2" %}">
     {% else %}
         <tr class="{% cycle "red_row1" "red_row2" %}">
     {% endif %}
-        <td><a href="{% url shade.social.views.profile m.author.get_profile.url %}">{{ m.author.get_full_name }}</a></td>
+        <td><a href="{% url shade.social.views.profile m.author.userprofile.url %}">{{ m.author.get_full_name }}</a></td>
         <td><a href="{% url shade.social.messaging.msg_view m.id %}">{{ m.subject }}</a></td>
         <td>{{ m.sent }}</td>
     </tr>

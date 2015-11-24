@@ -44,8 +44,8 @@ class GroupForm(forms.ModelForm):
         try:
             user = kwargs.pop('user')
             super(GroupForm, self).__init__(*args, **kwargs)
-            friends = user.get_profile().friends.all()
-            choices = [(x.pk, x.get_profile()) for x in friends]
+            friends = user.userprofile.friends.all()
+            choices = [(x.pk, x.userprofile) for x in friends]
             self.fields['members'].widget = FilteredSelectMultiple('Friends',
                     False, choices=choices)
         except KeyError:
@@ -87,7 +87,7 @@ class MessageForm(forms.ModelForm):
 
         recipient = self.cleaned_data.get('recipient')
         author = self.instance.author
-        if recipient not in author.get_profile().friends.all():
+        if recipient not in author.userprofile.friends.all():
             self._errors['url'] = [u'User not in your friends.']
 
         return self.cleaned_data

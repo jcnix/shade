@@ -14,7 +14,7 @@
     <br/>
     <p><b>Results</b></p>
     {% for r in results %}
-    <p><a href="{% url shade.social.views.profile r.get_profile.url %}">{{ r.get_full_name }}</a></p>
+    <p><a href="{% url shade.social.views.profile r.userprofile.url %}">{{ r.get_full_name }}</a></p>
     {% endfor %}
 {% endif %}
 {% endblock %}

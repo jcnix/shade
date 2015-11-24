@@ -4,16 +4,16 @@
 
 {% block content %}
 <p>Welcome {{ user.first_name }}</p>
-<p>Profile URL: http://shade.casey-jones.org{% url shade.social.views.profile user.get_profile.url %}</p>
+<p>Profile URL: http://shade.casey-jones.org{% url shade.social.views.profile user.userprofile.url %}</p>
 <h3>Friends</h3>
 <p>
 <a href="{% url shade.social.views.manage_friends %}">Manage Friends</a><br/>
-{% for f in user.get_profile.friends.all %}
-    <a href="{% url shade.social.views.profile f.get_profile.url %}">{{ f.get_profile }}</a>
+{% for f in user.userprofile.friends.all %}
+    <a href="{% url shade.social.views.profile f.userprofile.url %}">{{ f.userprofile }}</a>
     <br/>
 {% endfor %}
 <h3>Updates</h3>
-<form method="post" action="{% url shade.social.comments.post user.get_profile.url %}">
+<form method="post" action="{% url shade.social.comments.post user.userprofile.url %}">
     {% csrf_token %}
     {% include "base_form.html" %}
     <input type="submit" value="Submit">

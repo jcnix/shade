@@ -27,8 +27,8 @@ def create_album(request, url):
         if form.is_valid():
             album = Album.objects.create(name=form.cleaned_data['name'])
             album.save()
-            user.get_profile().albums.add(album)
-            return HttpResponseRedirect('/profile/'+user.get_profile().url+'/albums')
+            user.userprofile.albums.add(album)
+            return HttpResponseRedirect('/profile/'+user.userprofile.url+'/albums')
 
     form = myforms.AlbumForm()
     return render_to_response('profile/album_new.html', {'form': form},
@@ -52,7 +52,7 @@ def view_img(request, url, img_id):
     other_user = prof.user
     user = request.user
     form = myforms.CommentForm()
-    if user == other_user or user in other_user.get_profile().friends.all():
+    if user == other_user or user in other_user.userprofile.friends.all():
         img = Picture.objects.get(id=img_id)
         return render_to_response('profile/view_img.html', {'img': img, 'other_user': other_user, 'form': form},
             context_instance=RequestContext(request))
@@ -70,7 +70,7 @@ def upload_img(request, album_id):
             pic = form.save()
             album.pictures.add(pic)
             album.save()
-            return HttpResponseRedirect('/profile/'+request.user.get_profile().url+'/albums/'+album_id+'/')
+            return HttpResponseRedirect('/profile/'+request.user.userprofile.url+'/albums/'+album_id+'/')
 
     return render_to_response('profile/img_upload.html', {'form': form},
             context_instance=RequestContext(request))
@@ -78,8 +78,8 @@ def upload_img(request, album_id):
 @login_required
 def delete_img(request, url, img_id):
     user = request.user
-    profile = user.get_profile()
-    user_imgs = user.get_profile().albums
+    profile = user.userprofile
+    user_imgs = user.userprofile.albums
     img = get_object_or_404(Picture, id=img_id)
 
     for a in user_imgs.all():
@@ -117,7 +117,7 @@ def comment_img(request, url, img_id):
 @login_required
 def set_profile_pic(request, url, img_id):
     user = request.user
-    prof = user.get_profile()
+    prof = user.userprofile
     user_imgs = prof.albums
     img = Picture.objects.get(id=img_id)
     for a in user_imgs.all():

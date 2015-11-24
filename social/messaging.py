@@ -16,7 +16,7 @@ def msg_view(request, msg_id):
     user = request.user
     m = get_object_or_404(Message, pk=msg_id)
     # Don't allow just anyone to read messages
-    if m not in user.get_profile().messages.all():
+    if m not in user.userprofile.messages.all():
         return HttpResponseRedirect('/')
     else:
         if not m.read:
@@ -35,8 +35,8 @@ def msg_compose(request, msg_id=0):
         if form.is_valid():
             m = form.save()
             recipient = form.cleaned_data['recipient']
-            recipient.get_profile().messages.add(m)
-            recipient.get_profile().save()
+            recipient.userprofile.messages.add(m)
+            recipient.userprofile.save()
             return HttpResponseRedirect('/inbox/')
 
     # replying
@@ -47,7 +47,7 @@ def msg_compose(request, msg_id=0):
         form = myforms.MessageForm(instance=msg)
     else:
         return HttpResponseRedirect('/inbox/')
-    form.fields['recipient'].choices = ((u.id, u.get_full_name()) for u in user.get_profile().friends.all())
+    form.fields['recipient'].choices = ((u.id, u.get_full_name()) for u in user.userprofile.friends.all())
     return render_to_response('messages/compose.html', {'form': form},
             context_instance=RequestContext(request))
 
@@ -55,8 +55,8 @@ def msg_compose(request, msg_id=0):
 def msg_delete(request, msg_id):
     user = request.user
     msg = Message.objects.get(id=msg_id)
-    if msg in user.get_profile().messages.all():
-        user.get_profile().messages.remove(msg)
+    if msg in user.userprofile.messages.all():
+        user.userprofile.messages.remove(msg)
         msg.delete()
     return HttpResponseRedirect('/inbox')
 

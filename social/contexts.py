@@ -5,7 +5,7 @@ def upcoming_events(request):
     if request.user.is_authenticated():
         now = datetime.datetime.now()
         user = request.user
-        events = user.get_profile().events.filter(datetime__gte=now)
+        events = user.userprofile.events.filter(datetime__gte=now)
     else:
         events = None
     return {'upcoming_events': events}

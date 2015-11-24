@@ -10,9 +10,9 @@
     Awaiting invite confirmation
 {% else %}
 {% if user.is_authenticated %}
-    {%if user != other_user and user not in other_user.get_profile.friends.all %}
-    <a href="{% url shade.social.views.invite other_user.get_profile.url %}">Add {{ other_user.first_name }} to your friends</a><br/>
-    <a href="{% url shade.social.views.subscribe other_user.get_profile.url %}">Subscribe to public updates from {{ other_user.first_name }}</a>
+    {%if user != other_user and user not in other_user.userprofile.friends.all %}
+    <a href="{% url shade.social.views.invite other_user.userprofile.url %}">Add {{ other_user.first_name }} to your friends</a><br/>
+    <a href="{% url shade.social.views.subscribe other_user.userprofile.url %}">Subscribe to public updates from {{ other_user.first_name }}</a>
     {% endif %}
 {% else %}
     <a href="{% url shade.social.auth.login %}">Login</a> to add {{other_user.first_name}} to your friends.
@@ -20,26 +20,26 @@
 {% endif %}
 </p>
 
-{% if user == other_user or user in other_user.get_profile.friends.all %}
-{% if other_user.get_profile.profile_picture %}
-    <p><img src="{{ other_user.get_profile.profile_picture.image.url }}" height="150" width="200"></p>
+{% if user == other_user or user in other_user.userprofile.friends.all %}
+{% if other_user.userprofile.profile_picture %}
+    <p><img src="{{ other_user.userprofile.profile_picture.image.url }}" height="150" width="200"></p>
 {% endif %}
 
-<p><a href="{% url shade.social.images.albums other_user.get_profile.url %}">{{ other_user.first_name }}'s Pictures</a></p>
-<p><a href="{% url shade.social.views.view_friends other_user.get_profile.url %}">{{ other_user.first_name }}'s Friends</a></p>
+<p><a href="{% url shade.social.images.albums other_user.userprofile.url %}">{{ other_user.first_name }}'s Pictures</a></p>
+<p><a href="{% url shade.social.views.view_friends other_user.userprofile.url %}">{{ other_user.first_name }}'s Friends</a></p>
 <h3>Information</h3>
 <p>
-    <b>Gender:</b> {{ other_user.get_profile.gender }}<br/>
-    <b>Age:</b> {{ age }} - <b>Born:</b> {{other_user.get_profile.birthdate }}<br/>
-    <b>Hometown:</b> {{ other_user.get_profile.hometown }}, {{ other_user.get_profile.home_state }} {{ other_user.get_profile.home_country }}<br />
-    <b>Current Location:</b> {{ other_user.get_profile.current_town }}, {{ other_user.get_profile.current_state }} {{ other_user.get_profile.current_country }}<br />
+    <b>Gender:</b> {{ other_user.userprofile.gender }}<br/>
+    <b>Age:</b> {{ age }} - <b>Born:</b> {{other_user.userprofile.birthdate }}<br/>
+    <b>Hometown:</b> {{ other_user.userprofile.hometown }}, {{ other_user.userprofile.home_state }} {{ other_user.userprofile.home_country }}<br />
+    <b>Current Location:</b> {{ other_user.userprofile.current_town }}, {{ other_user.userprofile.current_state }} {{ other_user.userprofile.current_country }}<br />
 </p>
 <h3>Bio</h3>
-<p>{{ other_user.get_profile.bio|markdown }}</p>
+<p>{{ other_user.userprofile.bio|markdown }}</p>
 {% endif %}
 <h3>Comments</h3>
 {% if form %}
-    <form id="comment" method="post" action="{% url shade.social.comments.post other_user.get_profile.url %}">
+    <form id="comment" method="post" action="{% url shade.social.comments.post other_user.userprofile.url %}">
         {% csrf_token %}
         {% include "base_form.html" %}
         <input type="submit" value="Submit">
@@ -47,8 +47,8 @@
 {% endif %}
 <br/>
 
-{% for c in other_user.get_profile.comments.all %}
-    {% if c.public or user == other_user or user in other_user.get_profile.friends.all %}
+{% for c in other_user.userprofile.comments.all %}
+    {% if c.public or user == other_user or user in other_user.userprofile.friends.all %}
         {% include "profile/comment.html" %}
     {% endif %}
 {% endfor %}

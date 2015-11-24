@@ -62,7 +62,7 @@ class CommentTest(TestCase):
         self.client.login(username='test', password='testpassword')
 
     def post_test(self):
-        response = self.client.post('/profile/'+self.user.get_profile().url +
+        response = self.client.post('/profile/'+self.user.userprofile.url +
                 '/comment/', {'post': 'test comment'})
         c = models.Comment.objects.get(id=1)
         self.assertEqual(c.post, 'test comment')
@@ -70,7 +70,7 @@ class CommentTest(TestCase):
 
     def reply_test(self):
         c = models.Comment.objects.get(id=1)
-        response = self.client.post('/profile/'+self.user.get_profile().url +
+        response = self.client.post('/profile/'+self.user.userprofile.url +
                 '/comment/' + c.id + '/reply', {'post': 'test subcomment'})
         sc = models.SubComment.objects.get(id=1)
         self.assertEqual(sc.post, 'test subcomment')
@@ -78,7 +78,7 @@ class CommentTest(TestCase):
 
     def delete_test(self):
         c = models.Comment.objects.get(id=1)
-        response = self.client.post('/profile/'+self.user.get_profile().url +
+        response = self.client.post('/profile/'+self.user.userprofile.url +
                 '/comment/' + c.id + '/delete', {'post': 'test subcomment'})
         self.failUnlessEqual(response.status_code, 200)
 

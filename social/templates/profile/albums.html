@@ -7,12 +7,12 @@
 {% if other_user == user %}
     <div id="nav">
         <ul>
-            <li><a href="{% url shade.social.images.create_album user.get_profile.url %}">Create Album</a></li>
+            <li><a href="{% url shade.social.images.create_album user.userprofile.url %}">Create Album</a></li>
         </ul>
     </div>
 {% endif %}
-{% for a in other_user.get_profile.albums.all %}
-    <p><a href="{% url shade.social.images.album other_user.get_profile.url a.id %}">{{ a.name }}</a></p>
+{% for a in other_user.userprofile.albums.all %}
+    <p><a href="{% url shade.social.images.album other_user.userprofile.url a.id %}">{{ a.name }}</a></p>
 {% empty %}
     <p>No albums</p>
 {% endfor %}

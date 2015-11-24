@@ -14,7 +14,7 @@ def gen_url():
     return url
 
 def can_users_interract(user1, user2):
-    return (user1 == user2 or user1 in user2.get_profile().friends.all())
+    return (user1 == user2 or user1 in user2.userprofile.friends.all())
 
 def get_age(birthdate):
     if not birthdate:

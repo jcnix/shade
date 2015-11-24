@@ -5,8 +5,8 @@
 {% block content %}
     <h2>{{ other_user.first_name }}'s Friends</h2>
     <p>
-    {% for f in other_user.get_profile.friends.all %}
-    <a href="{% url shade.social.views.profile f.get_profile.url %}">{{ f.first_name }} {{ f.last_name }}</a><br/>
+    {% for f in other_user.userprofile.friends.all %}
+    <a href="{% url shade.social.views.profile f.userprofile.url %}">{{ f.first_name }} {{ f.last_name }}</a><br/>
     {% empty %}
         {{ other_user.first_name}} has not added any friends yet.
     {% endfor %}

@@ -28,7 +28,7 @@ def dashboard(request):
 
     updates = []
     # Add user's status updates and comments from friends to user
-    my_comments = user.get_profile().comments.filter(sent__gte=last_week)
+    my_comments = user.userprofile.comments.filter(sent__gte=last_week)
     up = []
     for c in my_comments:
         up.append(c)
@@ -38,14 +38,14 @@ def dashboard(request):
     updates.append(me)
 
     # Add user's friends' status updates
-    friends = list(user.get_profile().friends.all())
-    subs = list(user.get_profile().subscriptions.all())
-    groups = user.get_profile().groups.all()
+    friends = list(user.userprofile.friends.all())
+    subs = list(user.userprofile.subscriptions.all())
+    groups = user.userprofile.groups.all()
     for g in groups:
         up = []
         members = g.members.all()
         for f in members:
-            us = f.get_profile().comments.filter(author=f, sent__gte=last_week)
+            us = f.userprofile.comments.filter(author=f, sent__gte=last_week)
             for u in us:
                 up.append(u)
             f = User.objects.get(username=f)
@@ -60,13 +60,13 @@ def dashboard(request):
     #reset up in case friends is empty
     up = []
     for f in friends:
-        comments = f.get_profile().comments.filter(sent__gte=last_week)
+        comments = f.userprofile.comments.filter(sent__gte=last_week)
         for c in comments:
             up.append(c)
     #ungrouped subscriptions
     for s in subs:
         #make sure public=True, we don't want to leak private updates.
-        comments = s.get_profile().comments.filter(public=True, sent__gte=last_week)
+        comments = s.userprofile.comments.filter(public=True, sent__gte=last_week)
         for c in comments:
             up.append(c)
 
@@ -83,11 +83,11 @@ def dashboard(request):
 @login_required
 def settings(request):
     #save this in case the url is invalid
-    old_url = request.user.get_profile().url
-    form = myforms.SettingsForm(instance=request.user.get_profile())
+    old_url = request.user.userprofile.url
+    form = myforms.SettingsForm(instance=request.user.userprofile)
 
     if request.method == 'POST':
-        form = myforms.SettingsForm(request.POST, instance=request.user.get_profile())
+        form = myforms.SettingsForm(request.POST, instance=request.user.userprofile)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/dashboard/')
@@ -119,7 +119,7 @@ def new_group(request):
         form = myforms.GroupForm(request.POST, user=user)
         if form.is_valid():
             g = form.save()
-            user.get_profile().groups.add(g)
+            user.userprofile.groups.add(g)
             return HttpResponseRedirect('/settings/friends/')
 
     form = myforms.GroupForm(user=user)
@@ -181,12 +181,12 @@ def profile(request, url):
     if user.is_authenticated():
         #check if we've invited the user to be our friend
         try:
-            inv = other_user.get_profile().invites.get(sender=user)
+            inv = other_user.userprofile.invites.get(sender=user)
             invited = True
         except Invite.DoesNotExist:
             invited = False
 
-        age = util.get_age(other_user.get_profile().birthdate)
+        age = util.get_age(other_user.userprofile.birthdate)
 
         # post a comment
         if util.can_users_interract(user, other_user):
@@ -201,7 +201,7 @@ def profile(request, url):
 @login_required
 def subscribe(request, url):
     user = request.user
-    prof = user.get_profile()
+    prof = user.userprofile
     other_user_prof = UserProfile.objects.get(url=url)
     other_user = other_user_prof.user
     prof.subscriptions.add(other_user)
@@ -245,8 +245,8 @@ def accept_inv(request, url):
     sender = prof.user
 
     inv = Invite.objects.get(user=user, sender=sender)
-    user.get_profile().friends.add(sender)
-    sender.get_profile().friends.add(user)
+    user.userprofile.friends.add(sender)
+    sender.userprofile.friends.add(user)
     inv.delete()
     return HttpResponseRedirect('/dashboard/')
 
@@ -261,7 +261,7 @@ def ignore_inv(request, url):
 
 @login_required
 def events(request):
-    events = request.user.get_profile().events
+    events = request.user.userprofile.events
     return render_to_response('events/events.html', {'events': events},
             context_instance=RequestContext(request))
 
@@ -275,7 +275,7 @@ def create_event(request):
         if form.is_valid():
             event = form.save()
             event.attending.add(user)
-            user.get_profile().events.add(event)
+            user.userprofile.events.add(event)
             return HttpResponseRedirect('/events/%d/' % event.id)
 
     return render_to_response('events/new_event.html', {'form': form},
@@ -287,7 +287,7 @@ def event_view(request, event_id):
     event = get_object_or_404(Event, id=event_id)
 
     # Get list of users not invited yet
-    invitable = set(user.get_profile().friends.all())
+    invitable = set(user.userprofile.friends.all())
     invitable = invitable.difference(set(event.attending.all()))
     invitable = invitable.difference(set(event.maybe.all()))
     invitable = invitable.difference(set(event.not_attending.all()))
@@ -301,7 +301,7 @@ def event_view(request, event_id):
             inv = EventInvite.objects.create(user=other_user, sent=now, event=event)
             inv.save()
             event.awaiting.add(other_user)
-            other_user.get_profile().event_invites.add(inv)
+            other_user.userprofile.event_invites.add(inv)
 
     return render_to_response('events/event.html', {'event': event, 'invitable': invitable},
             context_instance=RequestContext(request))
@@ -311,11 +311,11 @@ def event_accept(request, event_id):
     user = request.user
     event = Event.objects.get(id=event_id)
     #make sure the user is actually invited
-    for i in user.get_profile().event_invites.all():
+    for i in user.userprofile.event_invites.all():
         if i.event == event:
             event.attending.add(user)
             event.awaiting.remove(user)
-            user.get_profile().events.add(event)
+            user.userprofile.events.add(event)
             i.delete()
 
     return HttpResponseRedirect('/dashboard')
@@ -325,11 +325,11 @@ def event_maybe(request, event_id):
     user = request.user
     event = Event.objects.get(id=event_id)
     #make sure the user is actually invited
-    for i in user.get_profile().event_invites.all():
+    for i in user.userprofile.event_invites.all():
         if i.event == event:
             event.maybe.add(user)
             event.awaiting.remove(user)
-            user.get_profile().events.add(event)
+            user.userprofile.events.add(event)
             i.delete()
 
     return HttpResponseRedirect('/dashboard')
@@ -339,7 +339,7 @@ def event_decline(request, event_id):
     user = request.user
     event = Event.objects.get(id=event_id)
     #make sure the user is actually invited
-    for i in user.get_profile().event_invites.all():
+    for i in user.userprofile.event_invites.all():
         if i.event == event:
             event.not_attending.add(user)
             event.awaiting.remove(user)

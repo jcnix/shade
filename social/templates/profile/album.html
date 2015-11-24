@@ -14,7 +14,7 @@
 
 <p>
 {% for p in album.pictures.all %}
-    <a href="{% url shade.social.images.view_img other_user.get_profile.url p.id %}"><img src="{{ p.image.url }}" height="150" width="200"></a>
+    <a href="{% url shade.social.images.view_img other_user.userprofile.url p.id %}"><img src="{{ p.image.url }}" height="150" width="200"></a>
 {% empty %}
     Album empty.
 {% endfor %}
