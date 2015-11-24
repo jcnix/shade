@@ -26,12 +26,12 @@
             <div id="nav">
                 {% if user.is_authenticated %}
                     <ul>
-                        <li><a href="{% url shade.social.views.dashboard %}">Dashboard</a></li>
-                        <li><a href="{% url shade.social.views.settings %}">Settings</a></li>
-                        <li><a href="{% url shade.social.views.profile user.userprofile.url %}">Profile</a></li>
-                        <li><a href="{% url shade.social.images.albums user.userprofile.url %}">Pictures</a></li>
-                        <li><a href="{% url shade.social.views.search %}">Search</a></li>
-                        <li><a href="{% url shade.social.auth.logout %}">Logout</a></li>
+                        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                        <li><a href="{% url 'settings' %}">Settings</a></li>
+                        <li><a href="{% url 'profile' user.userprofile.url %}">Profile</a></li>
+                        <li><a href="{% url 'albums' user.userprofile.url %}">Pictures</a></li>
+                        <li><a href="{% url 'search' %}">Search</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
                     </ul>    
                 {% endif %}
             </div>
@@ -56,14 +56,14 @@
                         {% endfor %}
                         </p>
                         <p>
-                        <b><a href="{% url shade.social.messaging.inbox %}">Messages</a></b><br/>
+                        <b><a href="{% url 'inbox' %}">Messages</a></b><br/>
                         {% if unread_msg_count %}
                             {{ unread_msg_count }} message{{ unread_msg_count|pluralize }}
                         {% else %}
                             No new messages.
                         {% endif %}
                         <p>
-                        <b><a href="{% url shade.social.views.events %}">Events</a></b><br/>
+                        <b><a href="{% url 'events' %}">Events</a></b><br/>
                         {% for i in user.userprofile.event_invites.all %}
                             Invited to: {{ i.event.title }} by {{ i.event.author.get_full_name }} on {{ i.sent }}.<br/>
                             <a href="{% url shade.social.views.event_accept i.event.id %}">Attending</a><br/>
@@ -80,9 +80,9 @@
                     {% endif %}
                 </div>
             </div>
-            <div id="push">&nbsp</div>
+            <div id="push">&nbsp;</div>
             <div id="footer">
-                <p>Copyright 2011 Casey-Jones.org <a href="http://www.djangoproject.com/"><img src="http://media.djangoproject.com/img/badges/djangoproject120x25.gif" border="0" alt="A Django project." title="A Django project." /></a></p>
+                <p>Copyright 2015 Casey Jones <a href="http://www.djangoproject.com/"><img src="http://media.djangoproject.com/img/badges/djangoproject120x25.gif" border="0" alt="A Django project." title="A Django project." /></a></p>
             </div>
         </div>
     </body>

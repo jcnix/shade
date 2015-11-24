@@ -2,8 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from shade.social import forms as myforms
-from shade.social.models import UserProfile, Message
+import forms as myforms
+from .models import UserProfile, Message
 import datetime
 
 @login_required

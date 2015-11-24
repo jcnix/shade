@@ -3,9 +3,9 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from shade.social import forms as myforms
-from shade.social import util
-from shade.social.models import UserProfile, Comment, Album, Picture
+import forms as myforms
+import util
+from .models import UserProfile, Comment, Album, Picture
 import datetime, os
 
 @login_required
