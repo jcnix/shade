@@ -24,7 +24,7 @@
 {% block content %}
 <h2>Groups</h2>
 <p>
-    <a href="{% url shade.social.views.new_group %}">Create new group</a><br/>
+    <a href="{% url 'new_group' %}">Create new group</a><br/>
     <br/>
     <ul id="sortable">
     {% for g in user.userprofile.groups.all %}
