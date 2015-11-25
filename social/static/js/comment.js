@@ -25,7 +25,7 @@ var CommentBox = React.createClass({displayName: 'CommentBox',
 	render: function() {
 		return (
 			<div class="commentBox">
-				<h1>Comments</h1>
+				<h2>Comments</h2>
 				<CommentList data={this.state.data} />
 			</div>
 		)
@@ -36,11 +36,29 @@ var CommentList = React.createClass({
 	render: function() {
 		var commentNodes = this.props.data.map(function(comment) {
 			return (
-				<Comment author={comment.author} key={comment.id} sent={comment.sent}>
-					{comment.text}
+					<Comment author={comment.author} key={comment.id} sent={comment.sent} text={comment.text}>
+						<SubcommentList data={comment.sub} />
+					</Comment>
+			);
+		});
+
+		return (
+			<div className="commentList">
+				{commentNodes}
+			</div>
+		)
+	}
+});
+
+var SubcommentList = React.createClass({
+	render: function() {
+		var commentNodes = this.props.data.map(function(comment) {
+			return (
+				<Comment author={comment.author} key={comment.id} sent={comment.sent} text={comment.text}>
 				</Comment>
 			);
 		});
+
 		return (
 			<div className="commentList">
 				{commentNodes}
@@ -51,19 +69,22 @@ var CommentList = React.createClass({
 
 var Comment = React.createClass({
 	rawMarkup: function() {
-		var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
+		var rawMarkup = marked(this.props.text.toString(), {sanitize: true});
 		return { __html: rawMarkup };
 	},
 
 	render: function() {
 		return (
 			<div className="panel panel-default comment">
-				<div className="panel-body">
-					<h3 className="commentAuthor">
+				<div className="panel-heading">
+					<h3 className="panel-title commentAuthor">
 						{this.props.author}
 					</h3>
+				</div>
+				<div className="panel-body">
 					<span dangerouslySetInnerHTML={this.rawMarkup()} />
 					{this.props.sent}
+					{this.props.children}
 				</div>
 			</div>
 		);
@@ -71,6 +92,6 @@ var Comment = React.createClass({
 });
 
 ReactDOM.render(
-	<CommentBox url="/dashboard/comments" pollInterval={2000}/>,
+	<CommentBox url="/dashboard/comments/" pollInterval={10000}/>,
 	document.getElementById('comments')
 );

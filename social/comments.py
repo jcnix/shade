@@ -30,8 +30,9 @@ def comments(request):
     my_comments = user.userprofile.comments.filter(sent__gte=last_week)
     up = []
     for c in my_comments:
-        c = comment_to_dict(c)
-        up.append(c)
+        cd = comment_to_dict(c)
+        cd['sub'] = [comment_to_dict(x) for x in c.subcomments.all()]
+        up.append(cd)
     #up = serializers.serialize('json', up)
     #me = {'Me': up}
     #me = GroupUpdates()
