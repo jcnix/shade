@@ -13,9 +13,9 @@
             </div>
         {% endfor %}
         <br/>
-        <a href="javascript:showSubcommentForm('{{ c.id }}', '{{ c.author.userprofile.url }}')">Reply</a>
+        <a class="btn btn-primary btn-sm" href="javascript:showSubcommentForm('{{ c.id }}', '{{ c.author.userprofile.url }}')">Reply</a>
         {% if c in user.userprofile.comments.all or user == c.author %}
-            <a href="{% url 'comment_delete' user.userprofile.url c.id %}">Delete</a>
+            <a class="btn btn-default btn-sm" href="{% url 'comment_delete' user.userprofile.url c.id %}">Delete</a>
         {% endif %}
     </div>
 </div>
