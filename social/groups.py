@@ -1,4 +1,6 @@
 class GroupUpdates:
-    name = ""
-    updates = []
+	#name = ""
+	updates = []
 
+	#def __str__(self):
+	#	return {name: updates}

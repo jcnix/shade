@@ -1,12 +1,88 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
+from django.http import JsonResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
+from django.core import serializers
+from django.forms.models import model_to_dict
 import forms as myforms
 import util
 from .models import UserProfile, Comment, SubComment
-import datetime
+from .groups import GroupUpdates
+import datetime, json
+
+def comment_to_dict(comment):
+    c = {}
+    c['id'] = comment.pk
+    c['author'] = comment.author.first_name + ' ' + comment.author.last_name
+    c['text'] = comment.post
+    c['sent'] = str(comment.sent)
+    return c
+
+def comments(request):
+    now = datetime.datetime.now()
+    week = datetime.timedelta(days=7)
+    last_week = now - week
+    user = request.user
+    updates = []
+    # Add user's status updates and comments from friends to user
+    my_comments = user.userprofile.comments.filter(sent__gte=last_week)
+    up = []
+    for c in my_comments:
+        c = comment_to_dict(c)
+        up.append(c)
+    #up = serializers.serialize('json', up)
+    #me = {'Me': up}
+    #me = GroupUpdates()
+    #me.name = 'Me'
+    #me.updates = up
+    #updates.append(me)
+    updates = up
+
+    # Add user's friends' status updates
+    friends = list(user.userprofile.friends.all())
+    subs = list(user.userprofile.subscriptions.all())
+    groups = user.userprofile.groups.all()
+    for g in groups:
+        up = []
+        members = g.members.all()
+        for f in members:
+            us = f.userprofile.comments.filter(author=f, sent__gte=last_week)
+            for u in us:
+                up.append(u)
+            f = User.objects.get(username=f)
+            # Remove f from list, so they don't end up in uncategorized
+            friends.remove(f)
+        up.sort(key=lambda x: x.sent, reverse=True)
+        #up = serializers.serialize('json', up)
+        gu = {g: up}
+        #gu = GroupUpdates()
+        #gu.name = g
+        #gu.updates = up
+        #updates.append(gu)
+
+    #reset up in case friends is empty
+    up = []
+    for f in friends:
+        comments = f.userprofile.comments.filter(sent__gte=last_week)
+        for c in comments:
+            up.append(c)
+    #ungrouped subscriptions
+    for s in subs:
+        #make sure public=True, we don't want to leak private updates.
+        comments = s.userprofile.comments.filter(public=True, sent__gte=last_week)
+        for c in comments:
+            up.append(c)
+
+    #up.sort(key=lambda x: x.sent, reverse=True)
+    up = serializers.serialize('json', up)
+    ng = {'No Group': up}
+    #ng = GroupUpdates()
+    #ng.name = 'No Group'
+    #ng.updates = up
+    #updates.append(ng)
+    return JsonResponse(updates, safe=False)
 
 @login_required
 def post(request, url):

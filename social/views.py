@@ -6,11 +6,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response, get_object_or_404
 from django.template import RequestContext
 import forms as myforms
-import util
+import util, comments
 from .models import UserProfile, Language, Invite, Message
 from .models import Comment, SubComment, Album, Picture, Event
 from .models import EventInvite, Group
-from .groups import GroupUpdates
 import datetime
 
 def index(request):
@@ -21,63 +20,10 @@ def index(request):
 
 @login_required
 def dashboard(request):
-    now = datetime.datetime.now()
-    week = datetime.timedelta(days=7)
-    last_week = now - week
-    user = request.user
-
-    updates = []
-    # Add user's status updates and comments from friends to user
-    my_comments = user.userprofile.comments.filter(sent__gte=last_week)
-    up = []
-    for c in my_comments:
-        up.append(c)
-    me = GroupUpdates()
-    me.name = 'Me'
-    me.updates = up
-    updates.append(me)
-
-    # Add user's friends' status updates
-    friends = list(user.userprofile.friends.all())
-    subs = list(user.userprofile.subscriptions.all())
-    groups = user.userprofile.groups.all()
-    for g in groups:
-        up = []
-        members = g.members.all()
-        for f in members:
-            us = f.userprofile.comments.filter(author=f, sent__gte=last_week)
-            for u in us:
-                up.append(u)
-            f = User.objects.get(username=f)
-            # Remove f from list, so they don't end up in uncategorized
-            friends.remove(f)
-        up.sort(key=lambda x: x.sent, reverse=True)
-        gu = GroupUpdates()
-        gu.name = g
-        gu.updates = up
-        updates.append(gu)
-
-    #reset up in case friends is empty
-    up = []
-    for f in friends:
-        comments = f.userprofile.comments.filter(sent__gte=last_week)
-        for c in comments:
-            up.append(c)
-    #ungrouped subscriptions
-    for s in subs:
-        #make sure public=True, we don't want to leak private updates.
-        comments = s.userprofile.comments.filter(public=True, sent__gte=last_week)
-        for c in comments:
-            up.append(c)
-
-    up.sort(key=lambda x: x.sent, reverse=True)
-    ng = GroupUpdates()
-    ng.name = 'No Group'
-    ng.updates = up
-    updates.append(ng)
-
+    #updates = comments.comments(request)
     form = myforms.CommentForm()
-    context = {'updates': updates, 'form': form, 'nbar': 'dashboard'}
+    #context = {'updates': updates, 'form': form, 'nbar': 'dashboard'}
+    context = {'form': form, 'nbar': 'dashboard'}
     return render(request, 'dashboard.html', context)
 
 @login_required

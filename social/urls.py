@@ -8,6 +8,7 @@ urlpatterns = [
 	url(r'^logout/', auth.logout, name='logout'),
 	url(r'^register/', auth.register, name='register'),
 	url(r'^dashboard/$', views.dashboard, name='dashboard'),
+	url(r'^dashboard/comments/$', comments.comments, name='comments'),
 	url(r'^settings/$', views.settings, name='settings'),
 	url(r'^profile/(?P<url>\w+)/$', views.profile, name='profile'),
 	url(r'^profile/(?P<url>\w+)/albums/$', images.albums, name='albums'),
