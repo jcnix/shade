@@ -4,7 +4,6 @@ static/media/uploads/*
 static/media/images/logo.png
 deploy.sh
 rsyncignore
-settings.py
 localsettings.py
 shade.data
 db.sqlite3
