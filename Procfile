@@ -1,1 +1,1 @@
-web: gunicorn shade/wsgi.py --log-file -
+web: gunicorn shade.wsgi:application --log-file -
