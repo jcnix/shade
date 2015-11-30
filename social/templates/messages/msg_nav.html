@@ -1,0 +1,6 @@
+<div id="nav">
+	<ul class="nav nav-pills">
+		<li role="presentation" class="{% if nbar == 'inbox' %}active{% endif %}"><a href="{% url 'inbox' %}">Inbox</a></li>
+		<li role="presentation" class="{% if nbar == 'compose' %}active{% endif %}"><a href="{% url 'msg_compose' %}">Compose</a></li>
+	</ul>
+</div>

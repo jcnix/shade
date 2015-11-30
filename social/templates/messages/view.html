@@ -1,21 +1,24 @@
 {% extends "base.html" %}
-{% load markup %}
+{% load django_markdown %}
 
 {% block title %}{{ msg.subject }}{% endblock %}
 
 {% block content %}
-<p>
-<div id="nav">
-    <ul>
-        <li><a href="{% url shade.social.messaging.inbox %}">Inbox</a></li>
-        <li><a href="{% url shade.social.messaging.msg_compose msg.id %}">Reply</a></li>
-        <li><a href="{% url shade.social.messaging.msg_delete msg.id %}">Delete</a></li>
-    </ul>
-</div>
-<br/>
-<p><b>{{ msg.subject }}</b><br/>
-From: {{ msg.author.get_full_name }}<br/>
-Sent: {{ msg.sent }}</p>
-<blockquote>{{ msg.body|markdown }}</blockquote>
+{% include 'messages/msg_nav.html' %}
+
+	<div>
+		<a class="btn btn-primary" href="{% url 'msg_reply' msg.id %}">Reply</a>
+		<a class="btn btn-default" href="{% url 'msg_delete' msg.id %}">Delete</a>
+	</div>
+	<div>
+		<div class="page-header">
+			<h1>{{ msg.subject }}</h1>
+		</div>
+		<div>
+			<b>From:</b> <a href="{% url 'profile' msg.author.userprofile.url %}">{{ msg.author.get_full_name }}</a><br/>
+			<b>Sent:</b> {{ msg.sent }}</p>
+			<blockquote>{{ msg.body|markdown }}</blockquote>
+		</div>
+	</div>
 {% endblock %}
 

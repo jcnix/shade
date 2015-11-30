@@ -3,27 +3,21 @@
 {% block title %}Inbox{% endblock %}
 
 {% block content %}
-<p>
-<div id="nav">
-    <ul>
-        <li><a href="{% url shade.social.messaging.msg_compose %}">Compose</a></li>
-    </ul>
-</div>
-<br/>
+{% include 'messages/msg_nav.html' %}
 <b>Inbox</b><br/>
-<table>
+<table class="table table-hover">
     <tr class="row2">
         <td>Author</td>
         <td>Subject</td>
         <td>Sent</td>
 {% for m in user.userprofile.messages.all %}
     {% if m.read %}
-        <tr class="{% cycle "row1" "row2" %}">
+        <tr>
     {% else %}
-        <tr class="{% cycle "red_row1" "red_row2" %}">
+        <tr class="{% cycle "unread_row1" "unread_row2" %}">
     {% endif %}
-        <td><a href="{% url shade.social.views.profile m.author.userprofile.url %}">{{ m.author.get_full_name }}</a></td>
-        <td><a href="{% url shade.social.messaging.msg_view m.id %}">{{ m.subject }}</a></td>
+        <td><a href="{% url 'profile' m.author.userprofile.url %}">{{ m.author.get_full_name }}</a></td>
+        <td><a href="{% url 'msg_view' m.id %}">{{ m.subject }}</a></td>
         <td>{{ m.sent }}</td>
     </tr>
 {% empty %}

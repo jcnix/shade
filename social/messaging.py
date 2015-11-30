@@ -8,7 +8,7 @@ import datetime
 
 @login_required
 def inbox(request):
-    return render_to_response('messages/inbox.html', {},
+    return render_to_response('messages/inbox.html', {'nbar': 'inbox'},
             context_instance=RequestContext(request))
 
 @login_required
@@ -28,9 +28,10 @@ def msg_view(request, msg_id):
 @login_required
 def msg_compose(request, msg_id=0):
     user = request.user
+    form = myforms.MessageForm()
     if request.method == 'POST':
         now = datetime.datetime.now()
-        msg = Message(author=user, sent=now)
+        msg = Message(author=user, sent=now, read=False)
         form = myforms.MessageForm(request.POST, instance=msg)
         if form.is_valid():
             m = form.save()
@@ -45,10 +46,9 @@ def msg_compose(request, msg_id=0):
         subject = 'Re: '+m.subject
         msg = Message(recipient=m.author, subject=subject)
         form = myforms.MessageForm(instance=msg)
-    else:
-        return HttpResponseRedirect('/inbox/')
+
     form.fields['recipient'].choices = ((u.id, u.get_full_name()) for u in user.userprofile.friends.all())
-    return render_to_response('messages/compose.html', {'form': form},
+    return render_to_response('messages/compose.html', {'form': form, 'nbar': 'compose'},
             context_instance=RequestContext(request))
 
 @login_required

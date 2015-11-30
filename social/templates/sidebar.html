@@ -17,7 +17,7 @@
                 <div class="panel-heading"><a href="{% url 'inbox' %}">Messages</a></div>
                 <div class="panel-body">
                     {% if unread_msg_count %}
-                        {{ unread_msg_count }} message{{ unread_msg_count|pluralize }}
+                        {{ unread_msg_count }} unread message{{ unread_msg_count|pluralize }}
                     {% else %}
                         No new messages.
                     {% endif %}

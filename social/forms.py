@@ -101,6 +101,11 @@ class MessageForm(forms.ModelForm):
             'body': forms.Textarea(attrs={'cols': 80, 'rows': 7}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super(MessageForm, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+
     def clean(self):
         super(forms.ModelForm, self).clean()
         subject = self.cleaned_data.get('subject')

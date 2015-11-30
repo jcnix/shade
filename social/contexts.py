@@ -1,4 +1,4 @@
-from shade.social.models import Message
+from .models import Message
 import datetime
 
 def upcoming_events(request):
