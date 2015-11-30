@@ -6,7 +6,6 @@ from django_markdown.fields import MarkdownFormField
 from django_markdown.widgets import MarkdownWidget
 from .models import UserProfile, Message, Comment, Picture
 from .models import Event, Group
-import hashlib
 
 class LoginForm(forms.Form):
     email = forms.EmailField()

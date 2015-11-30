@@ -1,7 +1,7 @@
 {% for field in form %}
 	<div class="form-group {% if field.errors %}has-error{% endif %}">
-		<label for="{{ field.id_for_label }}" class="col-sm-4 control-label">{{ field.label_tag }}</label>
-		<div class="col-sm-8">
+		<label for="{{ field.id_for_label }}" class="col-md-3 control-label">{{ field.label_tag }}</label>
+		<div class="col-md-9">
 			{{ field }}
 			{% for err in field.errors %}
 				<span class="error_message"><font color="red">{{ err }}</font></span>

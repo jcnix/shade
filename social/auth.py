@@ -13,13 +13,13 @@ def login(request):
             if form.is_valid():
                 e = form.cleaned_data['email']
                 p = form.cleaned_data['password']
-                print p
                 user = auth.authenticate(username=e, password=p)
                 if user is not None:
                     auth.login(request, user)
                     return HttpResponseRedirect('/dashboard/')
                 else:
-                    return HttpResponse('fail')
+                    form._errors['email'] = [u'Unable to authenticate']
+                    return render(request, 'registration/login.html', {'form': form})
 
         return render(request, 'registration/login.html', {'form': form})
     else:
