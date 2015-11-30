@@ -3,26 +3,35 @@
 {% block title %}Inbox{% endblock %}
 
 {% block content %}
-{% include 'messages/msg_nav.html' %}
-<b>Inbox</b><br/>
-<table class="table table-hover">
-    <tr class="row2">
-        <td>Author</td>
-        <td>Subject</td>
-        <td>Sent</td>
-{% for m in user.userprofile.messages.all %}
-    {% if m.read %}
-        <tr>
-    {% else %}
-        <tr class="{% cycle "unread_row1" "unread_row2" %}">
-    {% endif %}
-        <td><a href="{% url 'profile' m.author.userprofile.url %}">{{ m.author.get_full_name }}</a></td>
-        <td><a href="{% url 'msg_view' m.id %}">{{ m.subject }}</a></td>
-        <td>{{ m.sent }}</td>
-    </tr>
-{% empty %}
-    No Messages
-{% endfor %}
-</table>
+    {% include 'messages/msg_nav.html' %}
+    <div class="col-md-12">
+        <div class="page-header">
+            <h1>Inbox</h1>
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td>Author</td>
+                    <td>Subject</td>
+                    <td>Sent</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in user.userprofile.messages.all %}
+                    {% if m.read %}
+                        <tr>
+                    {% else %}
+                        <tr class="{% cycle "unread_row1" "unread_row2" %}">
+                    {% endif %}
+                        <td><a href="{% url 'profile' m.author.userprofile.url %}">{{ m.author.get_full_name }}</a></td>
+                        <td><a href="{% url 'msg_view' m.id %}">{{ m.subject }}</a></td>
+                        <td>{{ m.sent }}</td>
+                    </tr>
+                {% empty %}
+                    No Messages
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
 
