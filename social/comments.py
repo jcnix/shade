@@ -110,7 +110,7 @@ def post(request, url):
     return HttpResponseRedirect('/dashboard/')
 
 @login_required
-def reply(request, url, comment_id):
+def reply(request, comment_id):
     user = request.user
     prof = get_object_or_404(UserProfile, url=url)
     other_user = prof.user

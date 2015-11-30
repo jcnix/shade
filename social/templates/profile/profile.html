@@ -47,10 +47,8 @@
     {% endif %}
     <br/>
 
-    {% for c in other_user.userprofile.comments.all %}
-        {% if c.public or user == other_user or user in other_user.userprofile.friends.all %}
-            {% include "profile/comment.html" %}
-        {% endif %}
-    {% endfor %}
+    {% load staticfiles %}
+    <div id="comments"></div>
+    <script type="text/babel" src="{% static 'js/comment.js' %}"></script>
 {% endblock %}
 

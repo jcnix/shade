@@ -1,3 +1,30 @@
+var CommentForm = React.createClass({
+	getInitialState: function() {
+		return {text: ''};
+	},
+	handleTextChange: function(e) {
+		this.setState({text: e.target.value});
+	},
+	handleSubmit: function(e) {
+		e.preventDefault();
+		var text = this.state.text.trim();
+		if (!text) {
+			return;
+		}
+		this.props.onCommentSubmit({text: text});
+		this.setState({text: ''});
+	},
+
+	render: function() {
+		return (
+			<form className="commentForm" onSubmit={this.handleSubmit}>
+				<input className="form-control" type="text" value={this.state.text} onChange={this.handleTextChange} />
+				<input className="btn btn-primary btns-sm" type="submit" value="Reply" />
+			</form>
+		);
+	}
+});
+
 var CommentBox = React.createClass({displayName: 'CommentBox',
 	getInitialState: function() {
 		return {data: []};
@@ -18,15 +45,15 @@ var CommentBox = React.createClass({displayName: 'CommentBox',
 	},
 
 	componentDidMount: function() {
-    this.loadCommentsFromServer();
-    setInterval(this.loadCommentsFromServer, this.props.pollInterval);
-  },
+		this.loadCommentsFromServer();
+		setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+	},
 	
 	render: function() {
 		return (
 			<div class="commentBox">
 				<h2>Comments</h2>
-				<CommentList data={this.state.data} />
+				<CommentList url={this.props.url} data={this.state.data} />
 			</div>
 		)
 	}
@@ -51,6 +78,20 @@ var CommentList = React.createClass({
 });
 
 var SubcommentList = React.createClass({
+	handleCommentSubmit: function(comment) {
+		$.ajax({
+			url: "/comment/"+comment.id+"/reply",
+			dataType: 'json',
+			type: 'POST',
+			data: comment,
+			success: function(data) {
+				this.setState({data: data});
+			}.bind(this),
+			error: function(xhr, status, err) {
+				console.error(this.props.url, status, err.toString());
+			}.bind(this)
+		});
+	},
 	render: function() {
 		var commentNodes = this.props.data.map(function(comment) {
 			return (
@@ -62,6 +103,7 @@ var SubcommentList = React.createClass({
 		return (
 			<div className="commentList">
 				{commentNodes}
+				<CommentForm onCommentSubmit={this.handleCommentSubmit}/>
 			</div>
 		)
 	}
