@@ -44,7 +44,7 @@ def settings(request):
             profile = UserProfile.objects.get(url=old_url)
             request.user = profile.user
 
-    return render_to_response('settings/settings.html', {'form': form},
+    return render_to_response('settings/settings.html', {'form': form, 'nbar': 'settings'},
             context_instance=RequestContext(request))
 
 @login_required
