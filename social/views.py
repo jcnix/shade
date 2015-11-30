@@ -23,7 +23,7 @@ def dashboard(request):
     #updates = comments.comments(request)
     form = myforms.CommentForm()
     #context = {'updates': updates, 'form': form, 'nbar': 'dashboard'}
-    context = {'form': form, 'nbar': 'dashboard'}
+    context = {'form': form, 'nbar': 'dashboard', 'host': request.get_host()}
     return render(request, 'dashboard.html', context)
 
 @login_required
