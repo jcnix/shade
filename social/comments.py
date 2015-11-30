@@ -39,11 +39,13 @@ def comments(request):
     #me.name = 'Me'
     #me.updates = up
     #updates.append(me)
-    updates = up
+    updates.extend(up)
 
     # Add user's friends' status updates
+    
     friends = list(user.userprofile.friends.all())
     subs = list(user.userprofile.subscriptions.all())
+    '''
     groups = user.userprofile.groups.all()
     for g in groups:
         up = []
@@ -51,6 +53,8 @@ def comments(request):
         for f in members:
             us = f.userprofile.comments.filter(author=f, sent__gte=last_week)
             for u in us:
+                cd = comment_to_dict(c)
+                cd['sub'] = [comment_to_dict(x) for x in c.subcomments.all()]
                 up.append(u)
             f = User.objects.get(username=f)
             # Remove f from list, so they don't end up in uncategorized
@@ -61,28 +65,30 @@ def comments(request):
         #gu = GroupUpdates()
         #gu.name = g
         #gu.updates = up
-        #updates.append(gu)
-
+        #updates.extend(gu)
+    '''
     #reset up in case friends is empty
     up = []
     for f in friends:
         comments = f.userprofile.comments.filter(sent__gte=last_week)
         for c in comments:
-            up.append(c)
+            cd = comment_to_dict(c)
+            cd['sub'] = [comment_to_dict(x) for x in c.subcomments.all()]
+            up.append(cd)
     #ungrouped subscriptions
-    for s in subs:
+    #for s in subs:
         #make sure public=True, we don't want to leak private updates.
-        comments = s.userprofile.comments.filter(public=True, sent__gte=last_week)
-        for c in comments:
-            up.append(c)
+    #    comments = s.userprofile.comments.filter(public=True, sent__gte=last_week)
+    #    for c in comments:
+    #        up.append(c)
 
     #up.sort(key=lambda x: x.sent, reverse=True)
-    up = serializers.serialize('json', up)
-    ng = {'No Group': up}
+    #up = serializers.serialize('json', up)
+    #ng = {'No Group': up}
     #ng = GroupUpdates()
     #ng.name = 'No Group'
     #ng.updates = up
-    #updates.append(ng)
+    updates.extend(up)
     return JsonResponse(updates, safe=False)
 
 @login_required
@@ -101,7 +107,7 @@ def post(request, url):
             form = myforms.CommentForm(request.POST, instance=comment)
             comment = form.save()
             other_user.userprofile.comments.add(comment)
-    return HttpResponseRedirect('/profile/'+other_user.userprofile.url+'/')
+    return HttpResponseRedirect('/dashboard/')
 
 @login_required
 def reply(request, url, comment_id):
